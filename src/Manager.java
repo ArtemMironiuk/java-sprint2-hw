@@ -2,7 +2,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Manager {
-    int identifier = 0;
+    int identifierTask = 0;
+    int identifierEpic = 0;
 
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
@@ -10,7 +11,6 @@ public class Manager {
 
     /**
      * Получение списка всех задач.
-     * @return
      */
     public ArrayList<Task> getTasks(){
         return new ArrayList<>(tasks.values());
@@ -25,7 +25,6 @@ public class Manager {
 
     /**
      * Получение по идентификатору.
-     * @param id
      */
     public Task getTasks(int id){
         return tasks.get(id);
@@ -34,10 +33,9 @@ public class Manager {
     /**
      * Создание.Сам объект должен передаваться в качестве параметра.
      * @param task
-     * @return
      */
     public Task creatingTask(Task task){
-        task.setIdTask(++identifier);
+        task.setIdTask(++identifierTask);
         tasks.put(task.getIdTask(),task);
         return task;
     }
@@ -55,14 +53,12 @@ public class Manager {
 
     /**
      * Удаление по идентификатору.
-     * @param id
      */
     public void deleteTaskId(int id){
         tasks.remove(id);
     }
     /**
      * Получение списка всех задач.
-     * @return
      */
     public ArrayList<Subtask> getSubtask(){
         return new ArrayList<>(subtasks.values());
@@ -77,7 +73,6 @@ public class Manager {
 
     /**
      * Получение по идентификатору.
-     * @param id
      */
     public Subtask getSubtasks(int id){
         return subtasks.get(id);
@@ -86,10 +81,9 @@ public class Manager {
     /**
      * Создание.Сам объект должен передаваться в качестве параметра.
      * @param subtask
-     * @return
      */
     public Subtask creatingSubtask(Subtask subtask){
-        subtask.setEpicId(++identifier);
+        subtask.setEpicId(++identifierEpic);
         subtasks.put(subtask.getEpicId(),subtask);
         return subtask;
     }
@@ -107,10 +101,58 @@ public class Manager {
 
     /**
      * Удаление по идентификатору.
-     * @param id
      */
     public void deleteSubtaskId(int id){
         subtasks.remove(id);
     }
+    /**
+     * Получение списка всех Epics.
+     */
+    public ArrayList<Epic> getEpic(){
+        return new ArrayList<>(epics.values());
+    }
+
+    /**
+     * Удаление всех Epics.
+     */
+    public void deleteEpic(){
+        epics.clear();
+    }
+
+    /**
+     * Получение по идентификатору.
+     */
+    public Epic getEpics(int id){
+        return epics.get(id);
+    }
+
+    /**
+     * Создание Epic.Сам объект должен передаваться в качестве параметра.
+     * @param epic
+     * @return
+     */
+    public Epic creatingEpic(Epic epic){
+        epics.put(epic.getId(),epic);
+        return epic;
+    }
+
+    /**
+     * Обновление Epic. Новая версия объекта с верным идентификатором передаются в виде параметра.
+     * @param epic
+     */
+    public void updateEpic(Epic epic){
+        if(epics.containsKey()){
+//            return;
+//        }
+//        subtasks.put(subtask.getEpicId(), subtask);
+    }
+
+    /**
+     * Удаление по идентификатору.
+     */
+    public void deleteEpicId(int id){
+        epics.remove(id);
+    }
+
 
 }
