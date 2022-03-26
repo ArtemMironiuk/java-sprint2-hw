@@ -1,16 +1,23 @@
 import java.util.Objects;
 
 public class Task{
+
     private String name;
     private String description;
     private String status;
-    private int idTask;
+    private int id;
 
-    public Task(String name, String description, String status, int idTask) {
+    public Task(String name, String description, String status,int id) {
         this.name = name;
         this.description = description;
         this.status = status;
-        this.idTask = idTask;
+        this.id = id;
+    }
+
+    public Task(String name, String description,int id) {
+        this.name = name;
+        this.description = description;
+        this.id = id;
     }
 
     public String getName() {
@@ -37,12 +44,12 @@ public class Task{
         this.status = status;
     }
 
-    public int getIdTask() {
-        return idTask;
+    public int getId() {
+        return id;
     }
 
-    public void setIdTask(int idTask) {
-        this.idTask = idTask;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
@@ -50,7 +57,7 @@ public class Task{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return idTask == task.idTask &&
+        return id == task.id &&
                 Objects.equals(name, task.name) &&
                 Objects.equals(description, task.description) &&
                 Objects.equals(status, task.status);
@@ -58,7 +65,7 @@ public class Task{
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, status, idTask);
+        return Objects.hash(name, description, status, id);
     }
 
     @Override
@@ -67,7 +74,7 @@ public class Task{
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status='" + status + '\'' +
-                ", idTask=" + idTask +
+                ", id=" + id +
                 '}';
     }
 }
