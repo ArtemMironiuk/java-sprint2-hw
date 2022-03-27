@@ -15,25 +15,29 @@ public class Main {
         manager.deleteTaskId(0);
         System.out.println(manager.getTasks());
 
-        Subtask newSubtask = new Subtask("Тест", "Описание", Status.NEW,0);
-        Subtask newSubtask1 = new Subtask("Тест", "Описание", Status.NEW,0);
+        Subtask newSubtask = new Subtask("Тест", "Описание", Status.NEW,0, 1);
+        Subtask newSubtask1 = new Subtask("Тест", "Описание", Status.NEW,0,1);
 
         manager.creatingSubtask(newSubtask);
         manager.creatingSubtask(newSubtask1);
 
         ArrayList<Subtask> subtask = new ArrayList<>();
-        subtask.add(newSubtask);
-        subtask.add(newSubtask1);
+        ArrayList<Subtask> subtask1 = new ArrayList<>();
+        subtask1.add(newSubtask);
+        subtask1.add(newSubtask1);
+
 
         System.out.println(manager.getSubtasks());
 
         Epic newEpic = new Epic("Тест", "Описание",0,subtask);
+        Epic newEpic1 = new Epic("Тест", "Описание",0,subtask1);
 
         manager.creatingEpic(newEpic);
-        System.out.println(manager.getEpic());
+        manager.creatingEpic(newEpic1);
+        System.out.println(manager.getEpics());
 
 //        manager.getSubtasksEpic(newEpic);
-        System.out.println(manager.getSubtasksEpic(newEpic));
+//        System.out.println(manager.getSubtasksEpic(newEpic));
 
 
 //        manager.deleteTaskId(task.getId());
