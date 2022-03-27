@@ -106,6 +106,7 @@ public class Manager {
      * Получение списка всех Epics.
      */
     public Collection<Epic> getEpics() {
+        setEpicStatus();
         return mapEpics.values();
     }
     /**
@@ -130,6 +131,10 @@ public class Manager {
         epic.setId(identifierTask);
         identifierTask++;
         mapEpics.put(epic.getId(), epic);
+        ArrayList<Subtask> subtask = epic.getSubtask();
+        for (Subtask value : subtask) {
+            value.setEpicId(epic.getId());
+        }
         setEpicStatus();
     }
     /**
@@ -144,6 +149,10 @@ public class Manager {
             newEpic.setStatus(epic.getStatus());
             newEpic.setId(epic.getId());
             newEpic.setSubtask(epic.getSubtask());
+            ArrayList<Subtask> subtask = epic.getSubtask();
+            for (Subtask value : subtask) {
+                value.setEpicId(epic.getId());
+            }
             setEpicStatus();
         } else {
             epic.setId(identifierTask);
@@ -180,17 +189,19 @@ public class Manager {
             if (subtask.size() == 0) {
                 epics.setStatus(Status.NEW);
             } else {
-                for (int i = 0; i < subtask.size(); i++) {
-                    if (subtask.get(i).getStatus().equals(Status.NEW)) {
+                for (Subtask value : subtask) {
+                    if (value.getStatus().equals(Status.NEW)) {
                         newCounter++;
-                    } else if (subtask.get(i).getStatus().equals(Status.DONE)) {
+                    } else if (value.getStatus().equals(Status.DONE)) {
                         doneCounter++;
                     }
                 }
                 if (newCounter == subtask.size()) {
                     epics.setStatus(Status.NEW);
+                    newCounter = 0;
                 } else if (doneCounter == subtask.size()) {
                     epics.setStatus(Status.DONE);
+                    doneCounter = 0;
                 } else {
                     epics.setStatus(Status.IN_PROGRES);
                 }
