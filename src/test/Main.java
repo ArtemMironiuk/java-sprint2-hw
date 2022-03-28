@@ -15,9 +15,9 @@ public class Main {
         Task newTask = new Task("Тест", "Описание", Status.NEW,0);
         Task newTask1 = new Task("Тест", "Описание", Status.NEW,0);
 
-        Subtask newSubtask = new Subtask("Тест", "Описание", Status.NEW,0, 6);
-        Subtask newSubtask1 = new Subtask("Тест", "Описание", Status.DONE,0,6);
-        Subtask newSubtask2 = new Subtask("Тест", "Описание", Status.NEW,0,7);
+        Subtask newSubtask = new Subtask("Тест", "Описание", Status.NEW,0, 0);
+        Subtask newSubtask1 = new Subtask("Тест", "Описание", Status.DONE,0,0);
+        Subtask newSubtask2 = new Subtask("Тест", "Описание", Status.NEW,0,0);
 
         ArrayList<Subtask> subtaskList = new ArrayList<>();
         ArrayList<Subtask> subtaskList1 = new ArrayList<>();

@@ -66,7 +66,7 @@ public class Task{
 
     @Override
     public String toString() {
-        return "\ntasksOfDifferentTypes.Task{" +
+        return "\nTask{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status='" + status + '\'' +
