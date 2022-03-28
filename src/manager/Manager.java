@@ -1,9 +1,17 @@
+package manager;
+
+import tasksOfDifferentTypes.Epic;
+import tasksOfDifferentTypes.Subtask;
+import tasksOfDifferentTypes.Task;
+import utils.Status;
+
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
 public class Manager {
-    int identifierTask = 0;
+    private int identifierTask = 0;
 
     private HashMap<Integer, Task> mapTasks = new HashMap<>();
     private HashMap<Integer, Subtask> mapSubtasks = new HashMap<>();
@@ -44,9 +52,6 @@ public class Manager {
     public void updateTask(Task task) {
         if (mapTasks.containsKey(task.getId())) {
             mapTasks.put(task.getId(), task);
-        } else {
-            task.setId(identifierTask);
-            identifierTask++;
         }
     }
     /**
@@ -82,7 +87,15 @@ public class Manager {
         subtask.setId(identifierTask);
         identifierTask++;
         mapSubtasks.put(subtask.getId(), subtask);
-        subtask.setEpicId(subtask.idEpic);
+//        for (Epic epics : mapEpics.values()) {
+//            for (int i = 0; i < epics.getSubtask().size(); i++) {
+//            if(epics.getSubtask().get(i).equals(subtask)){
+//                subtask.setEpicId(epics.getId());
+//            }
+//        }
+//        subtask.setEpicId(subtask.idEpic);
+
+        statusCalculation(subtask.getEpicId());
     }
     /**
      * Обновление подзадачи. Новая версия объекта с верным идентификатором передаются в виде параметра.
@@ -92,21 +105,20 @@ public class Manager {
         if (mapSubtasks.containsKey(subtask.getId())) {
             mapSubtasks.put(subtask.getId(), subtask);
             subtask.setEpicId(subtask.idEpic);
+            statusCalculation(subtask.idEpic);
         }
-        subtask.setId(identifierTask);
-        identifierTask++;
     }
     /**
      * Удаление подзадачи по идентификатору.
      */
     public void deleteSubtaskId(int id) {
         mapSubtasks.remove(id);
+
     }
     /**
      * Получение списка всех Epics.
      */
     public Collection<Epic> getEpics() {
-        setEpicStatus();
         return mapEpics.values();
     }
     /**
@@ -123,7 +135,7 @@ public class Manager {
         return mapEpics.get(id);
     }
     /**
-     * Создание Epic.Сам объект должен передаваться в качестве параметра.
+     * Создание tasksOfDifferentTypes.Epic.Сам объект должен передаваться в качестве параметра.
      * @param epic
      * @return
      */
@@ -135,10 +147,11 @@ public class Manager {
         for (Subtask value : subtask) {
             value.setEpicId(epic.getId());
         }
-        setEpicStatus();
+//        setEpicStatus();
+//        statusCalculation();
     }
     /**
-     * Обновление Epic. Новая версия объекта с верным идентификатором передаются в виде параметра.
+     * Обновление tasksOfDifferentTypes.Epic. Новая версия объекта с верным идентификатором передаются в виде параметра.
      * @param epic
      */
     public void updateEpic(Epic epic) {
@@ -153,10 +166,7 @@ public class Manager {
             for (Subtask value : subtask) {
                 value.setEpicId(epic.getId());
             }
-            setEpicStatus();
-        } else {
-            epic.setId(identifierTask);
-            identifierTask++;
+//            setEpicStatus();
         }
     }
     /**
@@ -205,6 +215,32 @@ public class Manager {
                 } else {
                     epics.setStatus(Status.IN_PROGRES);
                 }
+            }
+        }
+    }
+
+    private void statusCalculation(int idEpic) {
+        int count = 0;
+        int count1 = 0;
+        ArrayList<Subtask> list;
+        list = mapEpics.get(idEpic).getSubtask();
+        if (list.size() == 0) {
+            mapEpics.get(idEpic).setStatus(Status.NEW);
+        } else {
+            for (Subtask value : list) {
+                if (value.getStatus().equals(Status.NEW)) {
+                    count++;
+                } else if (value.getStatus().equals(Status.DONE)) {
+                    count1++;
+                }
+            }
+            if (count == list.size()) {
+                mapEpics.get(idEpic).setStatus(Status.NEW);
+            } else if (count1 == list.size()) {
+                mapEpics.get(idEpic).setStatus(Status.DONE);
+
+            } else {
+                mapEpics.get(idEpic).setStatus(Status.IN_PROGRES);
             }
         }
     }

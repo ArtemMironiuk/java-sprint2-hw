@@ -1,3 +1,5 @@
+package tasksOfDifferentTypes;
+
 import java.util.Objects;
 
 public class Task{
@@ -11,12 +13,6 @@ public class Task{
         this.name = name;
         this.description = description;
         this.status = status;
-        this.id = id;
-    }
-
-    public Task(String name, String description,int id) {
-        this.name = name;
-        this.description = description;
         this.id = id;
     }
 
@@ -70,7 +66,7 @@ public class Task{
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "\ntasksOfDifferentTypes.Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status='" + status + '\'' +

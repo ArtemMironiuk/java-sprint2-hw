@@ -1,10 +1,12 @@
+package tasksOfDifferentTypes;
+
 import java.util.ArrayList;
 
 public class Epic extends Task {
     private ArrayList<Subtask> subtask;
 
-    public Epic(String name, String description, int id,ArrayList<Subtask> subtask) {
-        super(name, description, id);
+    public Epic(String name, String description,String status, int id,ArrayList<Subtask> subtask) {
+        super(name, description,status, id);
         this.subtask = subtask;
     }
 
