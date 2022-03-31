@@ -2,6 +2,7 @@ package tasksOfDifferentTypes;
 
 public class Subtask extends Task {
     public int idEpic;
+    public int idEpi =0;
 
     public Subtask(String name, String description, String status, int id, int idEpic) {
         super(name, description, status,id);
