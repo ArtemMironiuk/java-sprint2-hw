@@ -9,79 +9,69 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-public class Manager {
+public class InMemoryTaskManager implements TaskManager{
     private int identifierTask = 0;
 
-    private HashMap<Integer, Task> mapTasks = new HashMap<>();
-    private HashMap<Integer, Subtask> mapSubtasks = new HashMap<>();
-    private HashMap<Integer, Epic> mapEpics = new HashMap<>();
+    private final HashMap<Integer, Task> mapTasks = new HashMap<>();
+    private final HashMap<Integer, Subtask> mapSubtasks = new HashMap<>();
+    private final HashMap<Integer, Epic> mapEpics = new HashMap<>();
 
-    /**
-     * Получение списка всех задач.
-     * @return
-     */
+    private final HistoryManager inMemoryHistoryManager = Managers.getHistory();
+
+    @Override
     public Collection<Task> getTasks() {
         return mapTasks.values();
     }
-    /**
-     * Удаление всех задач.
-     */
+
+    @Override
     public void deleteTasks() {
         mapTasks.clear();
     }
-    /**
-     * Получение задачи по идентификатору.
-     */
+
+    @Override
     public Task getTask(int id) {
-        return mapTasks.get(id);
+        Task task = mapTasks.get(id);
+        inMemoryHistoryManager.add(task);   //добавление задачи в историю
+        return task;
     }
-    /**
-     * Создание.Сам объект должен передаваться в качестве параметра.
-     * @param task
-     */
+
+    @Override
     public void creatingTask(Task task) {
         task.setId(identifierTask);
         identifierTask++;
         mapTasks.put(task.getId(), task);
     }
-    /**
-     * Обновление. Новая версия объекта с верным идентификатором передаются в виде параметра.
-     * @param task
-     */
+
+    @Override
     public void updateTask(Task task) {
         if (mapTasks.containsKey(task.getId())) {
             mapTasks.put(task.getId(), task);
         }
     }
-    /**
-     * Удаление по идентификатору.
-     */
+
+    @Override
     public void deleteTaskId(int id) {
         mapTasks.remove(id);
     }
-    /**
-     * Получение списка всех подзадач.
-     * @return
-     */
+
+    @Override
     public Collection<Subtask> getSubtasks() {
         return mapSubtasks.values();
     }
-    /**
-     * Удаление всех подзадач.
-     */
+
+    @Override
     public void deleteSubtasks() {
         mapSubtasks.clear();
     }
-    /**
-     * Получение по идентификатору.
-     */
+
+    @Override
     public Subtask getSubtask(int id) {
-        return mapSubtasks.get(id);
+        Subtask subtask = mapSubtasks.get(id);
+        inMemoryHistoryManager.add(subtask);
+        return subtask;
     }
-    /**
-     * Создание подзадачи.Сам объект должен передаваться в качестве параметра.
-     * @param subtask
-     */
+
+    @Override
     public void creatingSubtask(Subtask subtask) {
         subtask.setId(identifierTask);
         identifierTask++;
@@ -89,12 +79,9 @@ public class Manager {
         if (mapEpics.containsKey(subtask.idEpic)){
             statusCalculation(subtask.getEpicId());
         }
-
     }
-    /**
-     * Обновление подзадачи. Новая версия объекта с верным идентификатором передаются в виде параметра.
-     * @param subtask
-     */
+
+    @Override
     public void updateSubtask(Subtask subtask) {
         if (mapSubtasks.containsKey(subtask.getId())) {
             mapSubtasks.put(subtask.getId(), subtask);
@@ -104,9 +91,8 @@ public class Manager {
             }
         }
     }
-    /**
-     * Удаление подзадачи по идентификатору.
-     */
+
+    @Override
     public void deleteSubtaskId(int id) {
         if(mapSubtasks.get(id).getEpicId() >= 0){
             int idEpic = mapSubtasks.get(id).getEpicId();
@@ -115,32 +101,27 @@ public class Manager {
             }
         }
         mapSubtasks.remove(id);
-
     }
-    /**
-     * Получение списка всех Epics.
-     */
+
+    @Override
     public Collection<Epic> getEpics() {
         return mapEpics.values();
     }
-    /**
-     * Удаление всех Epics.
-     */
+
+    @Override
     public void deleteEpics() {
         mapEpics.clear();
         mapSubtasks.clear();
     }
-    /**
-     * Получение по идентификатору.
-     */
+
+    @Override
     public Epic getEpic(int id) {
-        return mapEpics.get(id);
+        Epic epic = mapEpics.get(id);
+        inMemoryHistoryManager.add(epic);
+        return epic;
     }
-    /**
-     * Создание tasksOfDifferentTypes.Epic.Сам объект должен передаваться в качестве параметра.
-     * @param epic
-     * @return
-     */
+
+    @Override
     public void creatingEpic(Epic epic) {
         epic.setId(identifierTask);
         identifierTask++;
@@ -151,10 +132,8 @@ public class Manager {
         }
         statusCalculation(epic.getId());
     }
-    /**
-     * Обновление tasksOfDifferentTypes.Epic. Новая версия объекта с верным идентификатором передаются в виде параметра.
-     * @param epic
-     */
+
+    @Override
     public void updateEpic(Epic epic) {
         if (mapEpics.containsKey(epic.getId())) {
             Epic newEpic = mapEpics.get(epic.getId());
@@ -170,9 +149,8 @@ public class Manager {
             statusCalculation(newEpic.getId());
         }
     }
-    /**
-     * Удаление по идентификатору.
-     */
+
+    @Override
     public void deleteEpicId(int id) {
         Epic newEpic = mapEpics.remove(id);
         for (Subtask subtask : newEpic.getSubtask()) {
@@ -180,11 +158,8 @@ public class Manager {
         }
         mapEpics.remove(id);
     }
-    /**
-     * Получение списка всех подзадач определённого эпика.
-     * @param epic
-     * @return
-     */
+
+    @Override
     public ArrayList<Subtask> getSubtasksEpic(Epic epic) {
         Epic newEpic = mapEpics.get(epic.getId());
         return newEpic.getSubtask();

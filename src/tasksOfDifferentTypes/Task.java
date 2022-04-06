@@ -1,15 +1,17 @@
 package tasksOfDifferentTypes;
 
+import utils.Status;
+
 import java.util.Objects;
 
 public class Task{
 
     private String name;
     private String description;
-    private String status;
+    private Status status;
     private int id;
 
-    public Task(String name, String description, String status,int id) {
+    public Task(String name, String description, Status status,int id) {
         this.name = name;
         this.description = description;
         this.status = status;
@@ -32,11 +34,11 @@ public class Task{
         this.description = description;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

@@ -1,6 +1,6 @@
 package test;
 
-import manager.Manager;
+import manager.InMemoryTaskManager;
 import tasksOfDifferentTypes.Epic;
 import tasksOfDifferentTypes.Subtask;
 import tasksOfDifferentTypes.Task;
@@ -10,9 +10,9 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        Manager manager = new Manager();
+        InMemoryTaskManager manager = new InMemoryTaskManager();
 
-        Task newTask = new Task("Тест", "Описание", Status.NEW,0);
+        Task newTask = new Task("Тест", "Описание",Status.NEW,0);
         Task newTask1 = new Task("Тест", "Описание", Status.NEW,0);
 
         Subtask newSubtask = new Subtask("Тест", "Описание", Status.NEW,0, 0);
