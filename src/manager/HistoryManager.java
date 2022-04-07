@@ -1,19 +1,21 @@
-package manager;
+    package manager;
 
-import tasksOfDifferentTypes.Task;
+    import tasksOfDifferentTypes.Task;
 
-import java.util.List;
+    import java.util.List;
 
-public interface HistoryManager {
-
-    /*
-     * Получение списка истории просмотров.
+    /**
+     * История просмотра задач.
      */
-    List<Task> getHistory();
+    public interface HistoryManager {
 
-    /*
-     * Добавление задачи в историю просмотров.
-     */
-    void add(Task task);
+        /*
+         * Получение списка истории просмотров.
+         */
+        List<Task> getHistory();
 
-}
+        /*
+         * Добавление задачи в историю просмотров.
+         */
+        void add(Task task);
+    }

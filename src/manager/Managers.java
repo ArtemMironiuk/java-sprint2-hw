@@ -1,13 +1,15 @@
-package manager;
+    package manager;
 
-public class Managers {
+    /**
+     * Менеджеры.
+     */
+    public class Managers {
 
+        public static TaskManager getDefaultTaskManager() {
+            return new InMemoryTaskManager();
+        }
 
-    public static TaskManager getDefault() {
-        return new InMemoryTaskManager();
+        public static HistoryManager getDefaultHistory(){
+            return new InMemoryHistoryManager();
+        }
     }
-
-    public static HistoryManager getHistory(){
-        return new InMemoryHistoryManager();
-    }
-}

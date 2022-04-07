@@ -1,6 +1,7 @@
 package test;
 
-import manager.InMemoryTaskManager;
+import manager.Managers;
+import manager.TaskManager;
 import tasksOfDifferentTypes.Epic;
 import tasksOfDifferentTypes.Subtask;
 import tasksOfDifferentTypes.Task;
@@ -10,7 +11,8 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        InMemoryTaskManager manager = new InMemoryTaskManager();
+
+        TaskManager manager = Managers.getDefaultTaskManager();
 
         Task newTask = new Task("Тест", "Описание",Status.NEW,0);
         Task newTask1 = new Task("Тест", "Описание", Status.NEW,0);
@@ -36,13 +38,23 @@ public class Main {
         manager.creatingEpic(newEpic);
         manager.creatingEpic(newEpic1);
 
-        System.out.println(manager.getTasks());
-        System.out.println(manager.getSubtasks());
-        System.out.println(manager.getEpics());
+//        System.out.println(manager.getTasks());
+//        System.out.println(manager.getSubtasks());
+//        System.out.println(manager.getEpics());
 
         newTask.setStatus(Status.DONE);
         newTask1.setStatus(Status.IN_PROGRES);
 
-        System.out.println(manager.getTasks());
+        manager.getTask(0);
+        manager.getTask(1);
+        manager.getSubtask(2);
+        manager.getSubtask(3);
+        manager.getSubtask(4);
+        manager.getEpic(5);
+        manager.getEpic(6);
+
+        System.out.println(manager.getHistory());
+
+//        System.out.println(manager.getTasks());
     }
 }

@@ -1,26 +1,27 @@
-package manager;
+    package manager;
 
-import tasksOfDifferentTypes.Task;
+    import tasksOfDifferentTypes.Task;
 
-import java.util.LinkedList;
-import java.util.List;
+    import java.util.LinkedList;
+    import java.util.List;
 
-public class InMemoryHistoryManager implements HistoryManager {
+    /**
+     * История задач в памяти.
+     */
+    public class InMemoryHistoryManager implements HistoryManager {
 
-    LinkedList<Task> history = new LinkedList<>();
+            LinkedList<Task> history = new LinkedList<>();
 
-    @Override
-    public List<Task> getHistory() {
-        return null;
-    }
-
-    @Override
-    public void add(Task task) {
-        //добавить ограничение на длину
-        if(history.size()==10){
-            history.remove(0);
+        @Override
+        public List<Task> getHistory() {
+            return history;
         }
-        history.add(task);
 
+        @Override
+        public void add(Task task) {
+            if(history.size()==10){
+                history.remove(0);
+            }
+            history.add(task);
+        }
     }
-}
