@@ -47,13 +47,23 @@ public class Main {
 
         manager.getTask(0);
         manager.getTask(1);
+        manager.getTask(1);
+        manager.getTask(1);
+        manager.getTask(1);
         manager.getSubtask(2);
+        manager.getSubtask(3);
+        manager.getSubtask(3);
         manager.getSubtask(3);
         manager.getSubtask(4);
         manager.getEpic(5);
         manager.getEpic(6);
+        manager.getEpic(6);
+        manager.getEpic(6);
+
+        manager.deleteEpicId(5);
 
         System.out.println(manager.getHistory());
+
 
 //        System.out.println(manager.getTasks());
     }

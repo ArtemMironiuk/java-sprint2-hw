@@ -2,26 +2,98 @@
 
     import tasksOfDifferentTypes.Task;
 
-    import java.util.LinkedList;
-    import java.util.List;
+    import java.util.*;
 
     /**
      * История задач в памяти.
      */
     public class InMemoryHistoryManager implements HistoryManager {
 
-            LinkedList<Task> history = new LinkedList<>();
+        Map<Integer, Node<Task>> map = new HashMap<>();
+
+            private Node<Task> head;
+            private Node<Task> tail;
+
+           private static class Node <T> {
+
+                public T data;
+                public Node<T> next;
+                public Node<T> prev;
+
+                public Node(Node<T> prev, T data, Node<T> next) {
+                    this.data = data;
+                    this.next = next;
+                    this.prev = prev;
+                }
+            }
+            /**
+             * Добавляет задачу в конец
+             * @param task
+             */
+            public void linkLast(Task task){
+                final Node<Task> oldTail = tail;  //последний элемент
+                final Node<Task> newNode = new Node<>(oldTail, task, null);  //новый элемент
+                tail = newNode;
+                if (oldTail == null)
+                    head = newNode;
+                else
+                    oldTail.next = newNode;
+                map.put(task.getId(), newNode);
+
+            }
+            /**
+             * Cобирает все задачи из списка в обычный ArrayList
+             */
+            public ArrayList<Task> getTasks(){
+                ArrayList<Task> list =new ArrayList<>();
+                Node<Task> current = head;
+                list.add(current.data);
+                while (current.next != null){
+                    current = current.next;
+                    list.add(current.data);
+                }
+                return list;
+            }
+
+            /**
+             * Удаление узла связного списка
+             * @param task
+             */
+            public void removeNode(Node<Task> task){
+                if(task == head){
+                    head = head.next;
+                    head.prev = null;
+                    return;
+                }
+                if (task == tail){
+                    tail = tail.prev;
+                    tail.next = null;
+                    return;
+                }
+                task.prev.next = task.next;
+                task.next.prev = task.prev;
+            }
 
         @Override
         public List<Task> getHistory() {
-            return history;
+            return getTasks();
         }
 
         @Override
         public void add(Task task) {
-            if(history.size()==10){
-                history.remove(0);
+            if(task != null) {
+                Node<Task> node = map.get(task.getId());
+                if(node != null) {
+                    removeNode(node);
+                }
+                linkLast(task);
+            } else {
+                new NullPointerException();
             }
-            history.add(task);
+        }
+
+        @Override
+        public void remove(int id){
+            removeNode(map.get(id));
         }
     }

@@ -25,6 +25,9 @@
 
         @Override
         public void deleteTasks() {
+            for (Task task : mapTasks.values()) {
+                inMemoryHistoryManager.remove(task.getId());
+            }
             mapTasks.clear();
         }
 
@@ -52,6 +55,7 @@
         @Override
         public void deleteTaskId(int id) {
             mapTasks.remove(id);
+            inMemoryHistoryManager.remove(id);
         }
 
         @Override
@@ -61,6 +65,9 @@
 
         @Override
         public void deleteSubtasks() {
+            for (Subtask subtask : mapSubtasks.values()) {
+                inMemoryHistoryManager.remove(subtask.getId());
+            }
             mapSubtasks.clear();
         }
 
@@ -101,6 +108,7 @@
                 }
             }
             mapSubtasks.remove(id);
+            inMemoryHistoryManager.remove(id);
         }
 
         @Override
@@ -110,7 +118,13 @@
 
         @Override
         public void deleteEpics() {
+            for (Epic epic : mapEpics.values()) {
+                inMemoryHistoryManager.remove(epic.getId());
+            }
             mapEpics.clear();
+            for (Subtask subtask : mapSubtasks.values()) {
+                inMemoryHistoryManager.remove(subtask.getId());
+            }
             mapSubtasks.clear();
         }
 
@@ -155,8 +169,10 @@
             Epic newEpic = mapEpics.remove(id);
             for (Subtask subtask : newEpic.getSubtask()) {
                 mapSubtasks.remove(subtask.getId());
+                inMemoryHistoryManager.remove(subtask.getId());
             }
             mapEpics.remove(id);
+            inMemoryHistoryManager.remove(id);
         }
 
         @Override
