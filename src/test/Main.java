@@ -23,12 +23,14 @@ public class Main {
 
         ArrayList<Subtask> subtaskList = new ArrayList<>();
         ArrayList<Subtask> subtaskList1 = new ArrayList<>();
+        ArrayList<Subtask> subtaskList2 = new ArrayList<>();
         subtaskList.add(newSubtask);
         subtaskList.add(newSubtask1);
         subtaskList1.add(newSubtask2);
 
         Epic newEpic = new Epic("Тест", "Описание",Status.NEW, 0,subtaskList);
         Epic newEpic1 = new Epic("Тест", "Описание",Status.NEW,0,subtaskList1);
+        Epic newEpic2 = new Epic("Тест", "Описание",Status.NEW,0,subtaskList2);
 
         manager.creatingTask(newTask);
         manager.creatingTask(newTask1);
@@ -37,34 +39,36 @@ public class Main {
         manager.creatingSubtask(newSubtask2);
         manager.creatingEpic(newEpic);
         manager.creatingEpic(newEpic1);
-
-//        System.out.println(manager.getTasks());
-//        System.out.println(manager.getSubtasks());
-//        System.out.println(manager.getEpics());
+        manager.creatingEpic(newEpic2);
 
         newTask.setStatus(Status.DONE);
         newTask1.setStatus(Status.IN_PROGRES);
 
         manager.getTask(0);
+        System.out.println("\n" + manager.getHistory());
         manager.getTask(1);
-        manager.getTask(1);
-        manager.getTask(1);
-        manager.getTask(1);
+        System.out.println(manager.getHistory());
+        System.out.println(" ");
         manager.getSubtask(2);
         manager.getSubtask(3);
-        manager.getSubtask(3);
-        manager.getSubtask(3);
+        System.out.println(manager.getHistory());
+        System.out.println(" ");
         manager.getSubtask(4);
+        manager.getSubtask(2);
+        System.out.println(manager.getHistory());
+        System.out.println(" ");
         manager.getEpic(5);
         manager.getEpic(6);
-        manager.getEpic(6);
-        manager.getEpic(6);
+        manager.getEpic(7);
+        System.out.println(manager.getHistory());
+        System.out.println(" ");
+        manager.getSubtask(3);
+        System.out.println(manager.getHistory());
+        System.out.println(" ");
 
         manager.deleteEpicId(5);
-
         System.out.println(manager.getHistory());
+        System.out.println(" ");
 
-
-//        System.out.println(manager.getTasks());
     }
 }
