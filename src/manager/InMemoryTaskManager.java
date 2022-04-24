@@ -67,8 +67,14 @@
         public void deleteSubtasks() {
             for (Subtask subtask : mapSubtasks.values()) {
                 inMemoryHistoryManager.remove(subtask.getId());
+                statusCalculation(subtask.getEpicId());
             }
             mapSubtasks.clear();
+            for (Epic epic : mapEpics.values()) {
+                epic.getSubtask().clear();
+                statusCalculation(epic.getId());
+            }
+
         }
 
         @Override
