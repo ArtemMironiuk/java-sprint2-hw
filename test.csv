@@ -1,0 +1,9 @@
+id,type,name,status,description,epic
+39, TASK', Тест', NEW', Описание', 
+40, TASK', Тест', NEW', Описание', 
+44, EPIC', Тест', IN_PROGRES', Описание', 
+45, EPIC', Тест', NEW', Описание', 
+46, EPIC', Тест', NEW', Описание', 
+41, SUBTASK', Тест', NEW', Описание', 
+42, SUBTASK', Тест', DONE', Описание', 
+43, SUBTASK', Тест', NEW', Описание', 

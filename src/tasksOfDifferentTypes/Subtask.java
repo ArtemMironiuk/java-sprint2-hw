@@ -1,9 +1,11 @@
 package tasksOfDifferentTypes;
 
 import utils.Status;
+import utils.TypeTasks;
 
 public class Subtask extends Task {
     public int idEpic;
+
 
     public Subtask(String name, String description, Status status, int id, int idEpic) {
         super(name, description, status,id);
@@ -20,6 +22,10 @@ public class Subtask extends Task {
 
     public void setEpicId(int idEpic) {
         this.idEpic = idEpic;
+    }
+
+    public TypeTasks getType() {
+        return TypeTasks.SUBTASK;
     }
 
     @Override
