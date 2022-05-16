@@ -22,6 +22,10 @@ public class Subtask extends Task {
         this.idEpic = idEpic;
     }
 
+    public TypeTasks getType() {
+        return TypeTasks.SUBTASK;
+    }
+
     @Override
     public String toString() {
         return "Subtask{" +
