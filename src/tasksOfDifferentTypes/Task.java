@@ -1,6 +1,7 @@
 package tasksOfDifferentTypes;
 
 import utils.Status;
+import utils.TypeTasks;
 
 import java.util.Objects;
 
@@ -10,9 +11,9 @@ public class Task{
     private String description;
     private Status status;
     private int id;
-    private TypeTasks type;
 
-    public Task(String name, String description, Status status,int id) {
+
+    public Task(String name, String description, Status status, int id) {
         this.name = name;
         this.description = description;
         this.status = status;

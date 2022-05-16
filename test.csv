@@ -1,0 +1,11 @@
+id,type,name,status,description,epic
+0, TASK, Тест, DONE, Описание
+1, TASK, Тест, IN_PROGRES, Описание
+2, SUBTASK, Тест, NEW, Описание, 5
+3, SUBTASK, Тест, DONE, Описание, 5
+4, SUBTASK, Тест, NEW, Описание, 6
+5, EPIC, Тест, IN_PROGRES, Описание
+6, EPIC, Тест, NEW, Описание
+7, EPIC, Тест, NEW, Описание
+
+01425673

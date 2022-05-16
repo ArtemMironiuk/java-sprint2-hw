@@ -50,13 +50,18 @@ public class InMemoryHistoryManager implements HistoryManager {
      * Cобирает все задачи из списка в обычный ArrayList
      */
     private ArrayList<Task> getTasks() {
+        //вынес в верх, при заходе оббнулял и заново заполнял
         ArrayList<Task> list = new ArrayList<>();
-        Node<Task> current = head;
-        list.add(current.data);
-        while (current.next != null) {
-            current = current.next;
+        Node<Task> current = null;
+        if(head != null){
+            current = head;
             list.add(current.data);
+            while (current.next != null) {
+                current = current.next;
+                list.add(current.data);
+            }
         }
+
         return list;
     }
 
@@ -93,8 +98,10 @@ public class InMemoryHistoryManager implements HistoryManager {
                 removeNode(node);
             }
             linkLast(task);
-        } else {
-            new NullPointerException();
+        }
+        //хз зачем оно тут и так выскочит эксепшен и закончит программу
+        else {
+            throw new NullPointerException();
         }
     }
 
