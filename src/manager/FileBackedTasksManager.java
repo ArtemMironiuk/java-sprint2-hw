@@ -8,10 +8,8 @@ import utils.TypeTasks;
 import utils.Status;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class FileBackedTasksManager extends InMemoryTaskManager{
 
@@ -148,7 +146,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
         save();
         return history;
     }
-
     /**
      * Из задачи в строку
      * @param task
@@ -168,12 +165,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
                 Subtask subtask = (Subtask) task;
                 return subtask.getId() + ", " + typeTask + ", " + subtask.getName() + ", " + subtask.getStatus() + ", " +
                         subtask.getDescription() + ", " + subtask.getEpicId();
-
             default:
                 throw new ManagerSaveException("Нет задачи, для передачи в строку");
         }
     }
-
     /**
      * Из строки в формирование задач
      * @param value
@@ -195,7 +190,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
         }
         return null;
     }
-
     /**
      * Сохранение истории в файл
      * @param manager
@@ -205,32 +199,29 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
         StringBuilder sb = new StringBuilder();
         if (manager.getHistory().size() != 0){
             for(Task task : manager.getHistory()){
-                sb.append(task.getId());
+                sb.append(task.getId()).append(", ");
             }
         }
-
         return sb.toString();
     }
-
     /**
      * Восстановление менеджера истории
      * @param value
      * @return
      */
     static List<Integer> historyFromString(String value) {
-        String[] id = value.split(",");
+        String[] id = value.split(", ");
         List<Integer> history = new ArrayList<>();
         for (String v : id) {
             history.add(Integer.valueOf(v));
         }
         return history;
     }
-
     /**
      * Сохранение в файл
      */
     private void save(){
-        try (final BufferedWriter writer = new BufferedWriter(new FileWriter(file,StandardCharsets.UTF_8))) {
+        try (final BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.append("id,type,name,status,description,epic");
             writer.newLine();
             for (int i = 0; i < mapTasks.size() + mapEpics.size() + mapSubtasks.size(); i++) {
@@ -246,8 +237,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
                     writer.append(toString(mapEpics.get(i)));
                     writer.newLine();
                 }
-
-
             }
             writer.append("\n");
             writer.append(historyToString(inMemoryHistoryManager));//Что то не то тут
@@ -257,13 +246,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
             throw new ManagerSaveException(e.getMessage());
         }
     }
-
     /**
      * Восстановление из файла
      */
     private void load() {
         int maxId = 0;
-        try (final BufferedReader reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+        try (final BufferedReader reader = new BufferedReader(new FileReader(file))) {
             reader.readLine();//Пропускаем заголовок
 
             while(true) {
@@ -273,7 +261,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
 
                 if (task != null) {
                     int id = task.getId();
-
                     if (task.getType() == TypeTasks.TASK) {
                         mapTasks.put(id, task);
                     } else if (task.getType() == TypeTasks.EPIC) {
@@ -287,6 +274,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
                 }
                 if(line.isEmpty()) {
                     break;
+                }
+            }
+            for (Subtask subtask: mapSubtasks.values()){ //проходим по восстановленным сабам и добавляем их в лист для эпика
+                if(mapEpics.containsKey(subtask.idEpic)){
+                    ArrayList<Subtask> list = mapEpics.get(subtask.idEpic).getSubtask();
+                    list.add(subtask);
+
                 }
             }
             String line = reader.readLine(); //читаем историю
@@ -308,12 +302,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
 
 
     }
-
+    /**
+     * Восстановление из файла
+     * @param file
+     * @return
+     */
     public static FileBackedTasksManager loadFromFile (File file) {
         FileBackedTasksManager manager = new FileBackedTasksManager(file);
         manager.load();
         return manager;
 
     }
-
 }

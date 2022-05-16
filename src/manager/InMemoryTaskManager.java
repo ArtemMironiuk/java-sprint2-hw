@@ -42,11 +42,9 @@ public class InMemoryTaskManager implements TaskManager{
 
     @Override
     public void creatingTask(Task task) {
-//    public int creatingTask(Task task) {
         task.setId(identifierTask);
         identifierTask++;
         mapTasks.put(task.getId(), task);
-//        return task.getId();
     }
 
     @Override

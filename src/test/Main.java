@@ -19,8 +19,7 @@ public class Main {
     public static void main(String[] args) {
 
         TaskManager manager = Managers.getDefaultTaskManager();
-        TaskManager manager1 = new FileBackedTasksManager(new File("task.csv"));
-        //TODO manager = manager1
+        TaskManager manager1 = FileBackedTasksManager.loadFromFile(new File("test.csv"));
 
         Task newTask = new Task("Тест", "Описание",NEW,0);
         Task newTask1 = new Task("Тест", "Описание", NEW,0);
@@ -73,15 +72,14 @@ public class Main {
         manager.getSubtask(3);
         System.out.println(manager.getHistory());
         System.out.println(" ");
-        FileBackedTasksManager.loadFromFile(new File("test.csv"));
-        System.out.println(manager1.getTasks());
-        System.out.println(manager.equals(manager1));
 
-//        System.out.println(manager.getEpics());
-//        System.out.println(" ");
-//        System.out.println(manager.getHistory());
-//        System.out.println(" ");
-
-
+        System.out.println(manager.getHistory());
+        System.out.println(" ");
+        System.out.println(manager1.getHistory());
+        //Сравнение сохраненного с восстановленным
+        System.out.println(manager.getTasks().equals(manager1.getTasks()));
+        System.out.println(manager.getSubtasks().equals(manager1.getSubtasks()));
+        System.out.println(manager.getEpics().equals(manager1.getEpics()));
+        System.out.println(manager.getHistory().equals(manager1.getHistory()));
     }
 }
