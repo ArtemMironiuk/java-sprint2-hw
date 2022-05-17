@@ -26,10 +26,8 @@ public class InMemoryHistoryManager implements HistoryManager {
             this.prev = prev;
         }
     }
-
     /**
      * Добавляет задачу в конец
-     *
      * @param task
      */
     private void linkLast(Task task) {
@@ -50,7 +48,6 @@ public class InMemoryHistoryManager implements HistoryManager {
      * Cобирает все задачи из списка в обычный ArrayList
      */
     private ArrayList<Task> getTasks() {
-        //вынес в верх, при заходе оббнулял и заново заполнял
         ArrayList<Task> list = new ArrayList<>();
         Node<Task> current = null;
         if(head != null){
@@ -92,16 +89,17 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        if (task != null) {
-            Node<Task> node = map.get(task.getId());
-            if (node != null) {
-                removeNode(node);
+        try {
+            if (task != null) {
+                Node<Task> node = map.get(task.getId());
+                if (node != null) {
+                    removeNode(node);
+                }
+                linkLast(task);
             }
-            linkLast(task);
-        }
-        //хз зачем оно тут и так выскочит эксепшен и закончит программу
-        else {
-            throw new NullPointerException();
+
+        } catch (NullPointerException exp) { // ловим исключение NullPointerException
+            System.out.println("Ошибка: передан неинициализированный объект!");
         }
     }
 

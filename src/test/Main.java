@@ -52,26 +52,16 @@ public class Main {
         newTask1.setStatus(Status.IN_PROGRES);
 
         manager.getTask(0);
-        System.out.println("\n" + manager.getHistory());
         manager.getTask(1);
-        System.out.println(manager.getHistory());
-        System.out.println(" ");
         manager.getSubtask(2);
         manager.getSubtask(3);
-        System.out.println(manager.getHistory());
         System.out.println(" ");
         manager.getSubtask(4);
         manager.getSubtask(2);
-        System.out.println(manager.getHistory());
-        System.out.println(" ");
         manager.getEpic(5);
         manager.getEpic(6);
         manager.getEpic(7);
-        System.out.println(manager.getHistory());
-        System.out.println(" ");
         manager.getSubtask(3);
-        System.out.println(manager.getHistory());
-        System.out.println(" ");
 
         System.out.println(manager.getHistory());
         System.out.println(" ");
