@@ -1,0 +1,5 @@
+package tasksOfDifferentTypes;
+
+class TaskTest {
+
+}

@@ -3,6 +3,7 @@ package tasksOfDifferentTypes;
 import utils.Status;
 import utils.TypeTasks;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task{
@@ -12,6 +13,20 @@ public class Task{
     private Status status;
     private int id;
 
+    protected LocalDateTime startTime;
+    protected int duration;
+    protected LocalDateTime endTime;
+
+
+    public Task(String name, String description, Status status, int id, LocalDateTime startTime, int duration) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.id = id;
+        this.startTime = startTime;
+        this.duration = duration;
+        this.endTime = startTime.plusMinutes(duration);
+    }
 
     public Task(String name, String description, Status status, int id) {
         this.name = name;
