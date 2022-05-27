@@ -3,6 +3,7 @@ package tasksOfDifferentTypes;
 import utils.Status;
 import utils.TypeTasks;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -14,18 +15,17 @@ public class Task{
     private int id;
 
     protected LocalDateTime startTime;
-    protected int duration;
+    protected Duration duration;
     protected LocalDateTime endTime;
 
 
-    public Task(String name, String description, Status status, int id, LocalDateTime startTime, int duration) {
+    public Task(String name, String description, Status status, int id, LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
         this.status = status;
         this.id = id;
         this.startTime = startTime;
         this.duration = duration;
-        this.endTime = startTime.plusMinutes(duration);
     }
 
     public Task(String name, String description, Status status, int id) {
@@ -67,6 +67,27 @@ public class Task{
         this.id = id;
     }
 
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getEndTime() {
+        return this.endTime = startTime.plus(duration);
+    }
+
+
     public TypeTasks getType() {
         return TypeTasks.TASK;
     }
@@ -92,10 +113,11 @@ public class Task{
         return "\nTask{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", status='" + status + '\'' +
-                ", id=" + id +
+                ", status='" + getStatus() + '\'' +
+                ", id=" + getId() + '\'' +
+                ", startTime='" + getStartTime() + '\'' +
+                ", duration='" + getDuration() + '\'' +
+                ", endTime='" + getEndTime() + '\'' +
                 '}';
     }
-
-
 }

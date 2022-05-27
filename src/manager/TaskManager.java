@@ -6,6 +6,7 @@
 
     import java.util.ArrayList;
     import java.util.List;
+    import java.util.Set;
 
     /**
      * Менеджер задач.
@@ -28,7 +29,7 @@
          * Создание.Сам объект должен передаваться в качестве параметра.
          * @param task
          */
-        void creatingTask(Task task);
+        int creatingTask(Task task);
         /**
          * Обновление. Новая версия объекта с верным идентификатором передаются в виде параметра.
          * @param task
@@ -102,4 +103,6 @@
          *
          */
         List<Task> getHistory();
+
+        Set<Task> getPrioritizedTasks();
     }

@@ -5,10 +5,7 @@ import tasksOfDifferentTypes.Subtask;
 import tasksOfDifferentTypes.Task;
 import utils.Status;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
-
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager{
     protected int identifierTask = 0;
@@ -41,10 +38,11 @@ public class InMemoryTaskManager implements TaskManager{
     }
 
     @Override
-    public void creatingTask(Task task) {
+    public int creatingTask(Task task) {
         task.setId(identifierTask);
         identifierTask++;
         mapTasks.put(task.getId(), task);
+        return task.getId();
     }
 
     @Override
@@ -192,6 +190,30 @@ public class InMemoryTaskManager implements TaskManager{
     @Override
     public List<Task> getHistory() {
         return inMemoryHistoryManager.getHistory();
+    }
+
+    @Override
+    public Set<Task> getPrioritizedTasks(){
+        Set<Task> tasks = new TreeSet<>((o1, o2) -> {
+            if (o1.getStartTime().isAfter(o2.getStartTime())) {
+                return 1;
+
+            } else if (o1.getStartTime().isBefore(o2.getStartTime())) {
+                return -1;
+
+            } else {
+                return 0;
+            }
+        });
+        for (Map.Entry<Integer, Task> entry : mapTasks.entrySet()) {
+            tasks.add(entry.getValue());
+        }
+        for (Map.Entry<Integer, Subtask> entry : mapSubtasks.entrySet()) {
+            tasks.add(entry.getValue());
+        }
+
+        return tasks;
+
     }
 
     /**

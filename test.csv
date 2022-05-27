@@ -1,11 +1,10 @@
-id,type,name,status,description,epic
-0,TASK,Тест,DONE,Описание
-1,TASK,Тест,IN_PROGRES,Описание
+id,type,name,status,description,epic,startTime,duration,endTime
+0,TASK,Тест,DONE,Описание,2022-05-27T16:08:07.920828,PT15M
+1,TASK,Тест,IN_PROGRES,Описание,2022-05-26T15:50:10,PT30M
 5,EPIC,Тест,IN_PROGRES,Описание
 6,EPIC,Тест,NEW,Описание
-7,EPIC,Тест,NEW,Описание
-2,SUBTASK,Тест,NEW,Описание,5
-3,SUBTASK,Тест,DONE,Описание,5
-4,SUBTASK,Тест,NEW,Описание,6
+2,SUBTASK,Тест,NEW,Описание,5,2022-05-27T15:50:10,PT15M
+3,SUBTASK,Тест,DONE,Описание,5,2022-05-27T18:50:10,PT30M
+4,SUBTASK,Тест,NEW,Описание,6,2022-05-27T16:50:10,PT50M
 
-0,1,4,2,5,6,7,3,
+0,1,4,2,5,6,3,

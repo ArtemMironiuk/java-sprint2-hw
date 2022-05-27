@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tasksOfDifferentTypes.Task;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,7 +16,7 @@ abstract class ManagerTest <T extends TaskManager>{
     Task newTask;
 
     void init(){
-        newTask = new Task("Тест", "Описание",NEW,0, LocalDateTime.now(),15);
+        newTask = new Task("Тест", "Описание",NEW,0, LocalDateTime.now(), Duration.ofMinutes(15));
         taskManager.creatingTask(newTask);
 
     }
