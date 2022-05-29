@@ -34,7 +34,7 @@ public class Epic extends Task {
         LocalDateTime startTime = subtasks.get(0).getStartTime();
         if(subtasks.size() > 0) {
             for (int i = 1; i < subtasks.size(); i++) {
-                if(startTime.isBefore(subtasks.get(i).getStartTime())) {
+                if (startTime.isAfter(subtasks.get(i).getStartTime())) {
                     startTime = subtasks.get(i).getStartTime();
                 }
             }
@@ -53,9 +53,13 @@ public class Epic extends Task {
 
     @Override
     public LocalDateTime getEndTime() {
-        LocalDateTime endTime = null;
-        if(subtasks!= null) {
-            endTime = subtasks.get(subtasks.size() - 1).getEndTime();
+        LocalDateTime endTime = subtasks.get(0).getEndTime();
+        if(subtasks.size() > 0) {
+            for (int i = 1; i < subtasks.size(); i++) {
+                if (endTime.isBefore(subtasks.get(i).getEndTime())) {
+                    endTime = subtasks.get(i).getEndTime();
+                }
+            }
         }
         return endTime;
     }

@@ -6,6 +6,7 @@ import tasksOfDifferentTypes.Task;
 import utils.Status;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class InMemoryTaskManager implements TaskManager{
     protected int identifierTask = 0;
@@ -42,6 +43,8 @@ public class InMemoryTaskManager implements TaskManager{
         task.setId(identifierTask);
         identifierTask++;
         mapTasks.put(task.getId(), task);
+        Set<Task> tasks = getPrioritizedTasks();
+
         return task.getId();
     }
 
