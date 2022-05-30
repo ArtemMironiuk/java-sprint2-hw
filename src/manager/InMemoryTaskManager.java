@@ -46,10 +46,9 @@ public class InMemoryTaskManager implements TaskManager {
             identifierTask++;
             mapTasks.put(task.getId(), task);
             return task.getId();
-        }else {
-            throw new TasksIntersectionException("У добавляемой задачи неверно указано время старта, есть пересечение.");
+        } else {
+            throw new TasksIntersectionException("У добавляемой задачи неверно указано время старта, есть пересечение. " + task);
         }
-
     }
 
     @Override
@@ -103,7 +102,7 @@ public class InMemoryTaskManager implements TaskManager {
             }
             return subtask.getId();
         } else {
-            throw new TasksIntersectionException("У добавляемой задачи неверно указано время старта, есть пересечение.");
+            throw new TasksIntersectionException("У добавляемой задачи неверно указано время старта, есть пересечение. " + subtask);
         }
     }
 
@@ -306,6 +305,7 @@ public class InMemoryTaskManager implements TaskManager {
                 }
             }
             return false;
+//            throw new TasksIntersectionException("У добавляемой задачи неверно указано время старта, есть пересечение.");
         } else {
             return true;
         }
