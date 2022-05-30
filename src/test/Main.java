@@ -23,12 +23,12 @@ public class Main {
         TaskManager manager = Managers.getDefaultTaskManager();
       //  TaskManager manager1 = FileBackedTasksManager.loadFromFile(new File("test.csv"));
 
-        Task newTask = new Task("Тест", "Описание",NEW,0, LocalDateTime.now(), Duration.ofMinutes(15));
-        Task newTask1 = new Task("Тест", "Описание", NEW,0,LocalDateTime.of(2022,05,26,15,50,10), Duration.ofMinutes(30));
+        Task newTask = new Task("Тест", "Описание",NEW,0);
+        Task newTask1 = new Task("Тест", "Описание", NEW,0,LocalDateTime.of(2022,5,26,15,50,10), Duration.ofMinutes(30));
 
-        Subtask newSubtask = new Subtask("Тест", "Описание", NEW,0, 0,LocalDateTime.of(2022,05,27,15,50,10), Duration.ofMinutes(15));
-        Subtask newSubtask1 = new Subtask("Тест", "Описание", DONE,0,0,LocalDateTime.of(2022,05,27,18,50,10), Duration.ofMinutes(30));
-        Subtask newSubtask2 = new Subtask("Тест", "Описание", NEW,0,0,LocalDateTime.of(2022,05,27,16,50,10), Duration.ofMinutes(50));
+        Subtask newSubtask = new Subtask("Тест", "Описание", NEW,0, 0,LocalDateTime.of(2022,5,27,18,50,10), Duration.ofMinutes(15));
+        Subtask newSubtask1 = new Subtask("Тест", "Описание", DONE,0,0,LocalDateTime.of(2022,5,27,18,50,10), Duration.ofMinutes(30));
+        Subtask newSubtask2 = new Subtask("Тест", "Описание", NEW,0,0,LocalDateTime.of(2022,5,27,16,50,10), Duration.ofMinutes(50));
 
         ArrayList<Subtask> subtaskList = new ArrayList<>();
         ArrayList<Subtask> subtaskList1 = new ArrayList<>();
@@ -39,7 +39,7 @@ public class Main {
         Epic newEpic = new Epic("Тест", "Описание", NEW, 0,subtaskList);
         Epic newEpic1 = new Epic("Тест", "Описание", NEW,0,subtaskList1);
 
-        int id = manager.creatingTask(newTask);
+       int id = manager.creatingTask(newTask);
         manager.creatingTask(newTask1);
         manager.creatingSubtask(newSubtask);
         manager.creatingSubtask(newSubtask1);
@@ -47,7 +47,7 @@ public class Main {
         manager.creatingEpic(newEpic);
         manager.creatingEpic(newEpic1);
 
-        newTask.setStatus(DONE);
+      //  newTask.setStatus(DONE);
         newTask1.setStatus(Status.IN_PROGRES);
 
         manager.getTask(0);

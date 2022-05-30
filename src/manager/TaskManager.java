@@ -55,7 +55,7 @@
          * Создание подзадачи.Сам объект должен передаваться в качестве параметра.
          * @param subtask
          */
-        void creatingSubtask(Subtask subtask);
+        int creatingSubtask(Subtask subtask);
         /**
          * Обновление подзадачи. Новая версия объекта с верным идентификатором передаются в виде параметра.
          * @param subtask
@@ -82,7 +82,7 @@
          * Создание Epic.Сам объект должен передаваться в качестве параметра.
          * @param epic
          */
-        void creatingEpic(Epic epic);
+        int creatingEpic(Epic epic);
         /**
          * Обновление tasksOfDifferentTypes.Epic. Новая версия объекта с верным идентификатором передаются в виде параметра.
          * @param epic
@@ -104,5 +104,8 @@
          */
         List<Task> getHistory();
 
-        Set<Task> getPrioritizedTasks();
+        /**
+         * Сортировка задач.
+         */
+        List<Task> getPrioritizedTasks();
     }

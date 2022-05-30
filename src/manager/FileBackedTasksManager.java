@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
@@ -83,9 +82,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void creatingSubtask(Subtask subtask) {
+    public int creatingSubtask(Subtask subtask) {
         super.creatingSubtask(subtask);
         save();
+        return subtask.getId();
     }
 
     @Override
@@ -121,9 +121,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void creatingEpic(Epic epic) {
+    public int creatingEpic(Epic epic) {
         super.creatingEpic(epic);
         save();
+        return epic.getId();
     }
 
     @Override
@@ -143,12 +144,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         ArrayList<Subtask> subtasksEpic = super.getSubtasksEpic(epic);
         save();
         return subtasksEpic;
-    }
-
-    @Override
-    public Set<Task> getPrioritizedTasks() {
-        Set<Task> prioritizedTasks = super.getPrioritizedTasks();
-        return prioritizedTasks;
     }
 
     @Override

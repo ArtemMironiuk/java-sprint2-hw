@@ -2,22 +2,43 @@ package manager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tasksOfDifferentTypes.Epic;
+import tasksOfDifferentTypes.Subtask;
 import tasksOfDifferentTypes.Task;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static utils.Status.DONE;
 import static utils.Status.NEW;
 
 abstract class ManagerTest <T extends TaskManager>{
     protected T taskManager;
     Task newTask;
+    Subtask newSubtask1;
+    Subtask newSubtask2;
+    Epic newEpic;
+    int idTask;
 
     void init(){
         newTask = new Task("Тест", "Описание",NEW,0, LocalDateTime.now(), Duration.ofMinutes(15));
-        taskManager.creatingTask(newTask);
+
+        newSubtask1 = new Subtask("Тест", "Описание", NEW,0, 0,LocalDateTime.of(2022,5,26,16,0,10), Duration.ofMinutes(15));
+        newSubtask2 = new Subtask("Тест", "Описание", DONE,0,0,LocalDateTime.of(2022,5,27,18,50,10), Duration.ofMinutes(30));
+
+        ArrayList<Subtask> subtaskList = new ArrayList<>();
+        subtaskList.add(newSubtask1);
+        subtaskList.add(newSubtask2);
+
+        newEpic = new Epic("Тест", "Описание", NEW, 0,subtaskList);
+
+        idTask = taskManager.creatingTask(newTask);
+        taskManager.creatingTask(newSubtask1);
+        taskManager.creatingTask(newSubtask2);
+        taskManager.creatingTask(newEpic);
 
     }
 
@@ -31,14 +52,21 @@ abstract class ManagerTest <T extends TaskManager>{
         assertEquals(newTask, tasks.get(0));
     }
 
-//    @Test
-//    void deleteTasks() {
-//    }
-//
-//    @Test
-//    void getTask() {
-//    }
-//
+    @Test
+    void deleteTasks() {
+        final List<Task> tasks = taskManager.getTasks();
+        taskManager.deleteTasks();
+        assertNull(tasks,"Лист пуст");
+    }
+
+    @Test
+    void getTask() {
+        Task task = taskManager.getTask(idTask);
+        assertNotNull(task);
+
+
+    }
+
 //    @Test
 //    void creatingTask() {
 //    }
