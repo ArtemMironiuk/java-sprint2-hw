@@ -8,15 +8,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class InMemoryTaskManagerTest extends ManagerTest<InMemoryTaskManager>{
 
     @BeforeEach
-    @Override
-    void init() {
+    void initInMemory() {
         taskManager = new InMemoryTaskManager();
         super.init();
     }
 
     @Test
     void testInMemoryTaskManager(){
-        taskManager = new InMemoryTaskManager();
+        taskManager = new InMemoryTaskManager(); //после создания менеджера он пустой
         assertEquals(0, taskManager.getTasks().size(),"Задач нет");
         assertEquals(0, taskManager.getSubtasks().size(),"Подзадач нет");
         assertEquals(0, taskManager.getEpics().size(),"Эпиков нет");

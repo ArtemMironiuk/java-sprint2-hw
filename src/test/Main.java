@@ -26,7 +26,7 @@ public class Main {
         Task newTask = new Task("Тест", "Описание",NEW,0);
         Task newTask1 = new Task("Тест", "Описание", NEW,0,LocalDateTime.of(2022,5,26,15,50,10), Duration.ofMinutes(30));
 
-        Subtask newSubtask = new Subtask("Тест", "Описание", NEW,0, 0,LocalDateTime.of(2022,5,27,18,50,10), Duration.ofMinutes(15));
+        Subtask newSubtask = new Subtask("Тест", "Описание", NEW,0, 0,LocalDateTime.of(2022,5,27,18,00,10), Duration.ofMinutes(15));
         Subtask newSubtask1 = new Subtask("Тест", "Описание", DONE,0,0,LocalDateTime.of(2022,5,27,18,50,10), Duration.ofMinutes(30));
         Subtask newSubtask2 = new Subtask("Тест", "Описание", NEW,0,0,LocalDateTime.of(2022,5,27,16,50,10), Duration.ofMinutes(50));
 
