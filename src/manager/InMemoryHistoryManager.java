@@ -7,12 +7,12 @@ import java.util.*;
 /**
  * История задач в памяти.
  */
-public class InMemoryHistoryManager implements HistoryManager {
+public class InMemoryHistoryManager<T extends Task> implements HistoryManager<T> {
 
-    private final Map<Integer, Node<Task>> map = new HashMap<>();
+    protected final Map<Integer, Node<T>> map = new HashMap<>();
 
-    private Node<Task> head;
-    private Node<Task> tail;
+    private Node<T> head;
+    private Node<T> tail;
 
     private static class Node<T> {
 
@@ -30,9 +30,9 @@ public class InMemoryHistoryManager implements HistoryManager {
      * Добавляет задачу в конец
      * @param task
      */
-    private void linkLast(Task task) {
-        final Node<Task> oldTail = tail;  //последний элемент
-        final Node<Task> newNode = new Node<>(oldTail, task, null);  //новый элемент
+    private void linkLast(T task) {
+        final Node<T> oldTail = tail;  //последний элемент
+        final Node<T> newNode = new Node<T>(oldTail, task, null);  //новый элемент
         tail = newNode;
         if (oldTail == null) {
             head = newNode;
@@ -47,9 +47,9 @@ public class InMemoryHistoryManager implements HistoryManager {
     /**
      * Cобирает все задачи из списка в обычный ArrayList
      */
-    private ArrayList<Task> getTasks() {
-        ArrayList<Task> list = new ArrayList<>();
-        Node<Task> current = null;
+    private ArrayList<T> getTasks() {
+        ArrayList<T> list = new ArrayList<>();
+        Node<T> current = null;
         if(head != null){
             current = head;
             list.add(current.data);
@@ -65,36 +65,51 @@ public class InMemoryHistoryManager implements HistoryManager {
     /**
      * Удаление узла связного списка
      *
-     * @param task
+     * @param node
      */
-    private void removeNode(Node<Task> task) {
- //       if(task!=null) {
-            if (task == head) {
-                head = head.next;
-                head.prev = null;
-                return;
-            }
- //       } else {
-            if (task == tail) {
-                tail = tail.prev;
-                tail.next = null;
-                return;
-            }
- //       }
-        task.prev.next = task.next;
-        task.next.prev = task.prev;
+    private void removeNode(Node<T> node) {
+// //       if(task!=null) {
+//            if (task == head) {
+//                head = head.next;
+//                head.prev = null;
+//                return;
+//            }
+// //       } else {
+//            if (task == tail) {
+//                tail = tail.prev;
+//                tail.next = null;
+//                return;
+//            }
+// //       }
+//        task.prev.next = task.next;
+//        task.next.prev = task.prev;
+        final Node<T> next = node.next;
+        final Node<T> prev = node.prev;
+        if (prev == null) {
+            head = next;
+        } else {
+            prev.next = next;
+            node.prev = null;
+        }
+        if (next == null) {
+            tail = prev;
+        } else {
+            next.prev = prev;
+            node.next = null;
+        }
+        node = null;
     }
 
     @Override
-    public List<Task> getHistory() {
+    public List <T> getHistory() {
         return getTasks();
     }
 
     @Override
-    public void add(Task task) {
+    public void add(T task) {
         try {
             if (task != null) {
-                Node<Task> node = map.get(task.getId());
+                Node<T> node = map.get(task.getId());
                 if (node != null) {
                     removeNode(node);
                 }

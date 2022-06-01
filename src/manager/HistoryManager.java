@@ -7,17 +7,17 @@
     /**
      * История просмотра задач.
      */
-    public interface HistoryManager {
+    public interface HistoryManager < T > {
 
         /*
          * Получение списка истории просмотров.
          */
-        List<Task> getHistory();
+        List<T> getHistory();
 
         /*
          * Добавление задачи в историю просмотров.
          */
-        void add(Task task);
+        void add(T task);
 
         /**
          * Удаление задачи из просмотра.

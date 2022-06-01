@@ -17,20 +17,15 @@ import static utils.Status.*;
 abstract class ManagerTest <T extends TaskManager>{
 
     protected T taskManager;
-    Task newTask;
-    Subtask newSubtask1;
-    Subtask newSubtask2;
-    Subtask newSubtask3;
-    Subtask newSubtask4;
-    Epic newEpic;
-    Epic newEpic2;
-    Epic newEpic3;
-    int idTask;
-    int idSubtask1;
-    int idSubtask2;
-    int idSubtask3;
-    int idSubtask4;
-    int idEpic;
+    protected Task newTask;
+    protected Subtask newSubtask1;
+    protected Subtask newSubtask2;
+    protected Epic newEpic;
+    protected Epic newEpic2;
+    protected int idTask;
+    protected int idSubtask1;
+    protected int idSubtask2;
+    protected int idEpic;
 
     void init(){
         newTask = new Task("Тест", "Описание",NEW,0, LocalDateTime.now(), Duration.ofMinutes(15));
@@ -41,27 +36,16 @@ abstract class ManagerTest <T extends TaskManager>{
         idSubtask1 = taskManager.creatingSubtask(newSubtask1);
         idSubtask2 = taskManager.creatingSubtask(newSubtask2);
 
-//        newSubtask3 = new Subtask("Тест", "Описание", NEW,0, 6,LocalDateTime.of(2022,5,28,16,0,10), Duration.ofMinutes(15));
-//        newSubtask4 = new Subtask("Тест", "Описание", NEW,0,6,LocalDateTime.of(2022,5,29,18,50,10), Duration.ofMinutes(30));
-//        idSubtask3 = taskManager.creatingSubtask(newSubtask1);
-//        idSubtask4 = taskManager.creatingSubtask(newSubtask2);
-
         ArrayList<Subtask> subtaskList = new ArrayList<>();
         subtaskList.add(newSubtask1);
         subtaskList.add(newSubtask2);
 
-//        ArrayList<Subtask> subtaskList1 = new ArrayList<>();
-//        subtaskList1.add(newSubtask3);
-//        subtaskList1.add(newSubtask4);
-
         newEpic = new Epic("Тест", "Описание", NEW, 0,subtaskList);
         newEpic2 = new Epic("Тест", "Описание", NEW, 0);
-       // newEpic3 = new Epic("Тест", "Описание", NEW, 0,subtaskList1);
 
         idEpic = taskManager.creatingEpic(newEpic);
-     //   taskManager.creatingEpic(newEpic3);
 
-       taskManager.getTask(idTask);
+        taskManager.getTask(idTask);
         taskManager.getSubtask(idSubtask1);
         taskManager.getEpic(idEpic);
     }
@@ -156,8 +140,9 @@ abstract class ManagerTest <T extends TaskManager>{
 
     @Test
     void getSubtask() {
-        Subtask subtask = taskManager.getSubtask(idSubtask1);
-        List<Task> subtaskHistory = taskManager.getHistory();
+        final Subtask subtask = taskManager.getSubtask(idSubtask1);
+        final List<Task> subtaskHistory = taskManager.getHistory();
+
         assertNotNull(subtask);
         assertNotNull(subtaskHistory);
         assertTrue(subtaskHistory.contains(subtask));
@@ -167,7 +152,7 @@ abstract class ManagerTest <T extends TaskManager>{
 
     @Test
     void creatingSubtask() {
-        Epic epic = taskManager.getEpic(newSubtask1.idEpic);
+        final Epic epic = taskManager.getEpic(newSubtask1.idEpic);
         assertNotNull(taskManager.getSubtasks());
         assertEquals(newSubtask1,taskManager.getSubtask(idSubtask1));
         assertEquals(2, taskManager.getSubtasks().size());
@@ -207,27 +192,31 @@ abstract class ManagerTest <T extends TaskManager>{
 
     @Test
     void deleteEpics() {
+
         taskManager.deleteEpics();
         final List<Epic> epics = taskManager.getEpics();
         final List<Task> epicsHistory = taskManager.getHistory();
         final List<Subtask> subtasks = taskManager.getSubtasks();
+
         for (Epic epic: epics) {
             assertFalse(epicsHistory.contains(epic));
         }
 
-        assertNull(epics,"Лист пуст");
-        assertNull(subtasks);
-
-        //дописать для итории
+        assertEquals(0,epics.size(),"Лист пуст");
+        assertEquals(0,subtasks.size(),"Лист пуст");
+        assertEquals(1,epicsHistory.size());
+        assertTrue(epicsHistory.contains(newTask));
     }
 
     @Test
     void getEpic() {
-        Epic epic = taskManager.getEpic(idEpic);
+        final Epic epic = taskManager.getEpic(idEpic);
+        final List<Task> list =taskManager.getHistory();
+
         assertNotNull(epic);
         assertEquals(idEpic, epic.getId());
         assertEquals(newEpic, epic);
-        //дописать для истории
+        assertTrue(list.contains(epic));
     }
 
     @Test
@@ -239,8 +228,6 @@ abstract class ManagerTest <T extends TaskManager>{
         assertEquals(newEpic,taskManager.getEpic(idEpic));
         assertEquals(2, taskManager.getEpics().size());
         assertEquals(newEpic.getId(),newSubtask1.getEpicId());
-
-        //написать для статуса
     }
 
     @Test
@@ -262,18 +249,14 @@ abstract class ManagerTest <T extends TaskManager>{
         final Epic epic = taskManager.getEpic(idEpic);
         final List<Task> epicsHistory = taskManager.getHistory();
 
-        for (Subtask subtask : epic.getSubtask()) {
-            assertNull(subtask);
-        }
-        assertNull(taskManager.getEpic(idEpic));
+        assertEquals(1,epicsHistory.size());
+        assertNull(epic);
         assertFalse(epicsHistory.contains(epic));
-        //дописать для истории
-
     }
 
     @Test
     void getSubtasksEpic() {
-        ArrayList<Subtask> subtasks = taskManager.getSubtasksEpic(newEpic);
+        final ArrayList<Subtask> subtasks = taskManager.getSubtasksEpic(newEpic);
         assertNotNull(subtasks);
         assertEquals(2,subtasks.size());
         assertEquals(newSubtask1, subtasks.get(0));
@@ -309,10 +292,8 @@ abstract class ManagerTest <T extends TaskManager>{
         taskManager.creatingTask(newTask2);
         taskManager.creatingTask(newTask3);
 
-
         assertNotNull(taskManager.getTasks());
         assertEquals(newTask1, taskManager.getTasks().get(1));
         assertEquals(newTask2, taskManager.getTasks().get(2));
-
     }
 }

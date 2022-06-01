@@ -9,10 +9,10 @@ import java.util.Objects;
 
 public class Task{
 
-    private String name;
-    private String description;
-    private Status status;
-    private int id;
+    protected String name;
+    protected String description;
+    protected Status status;
+    protected int id;
 
     protected LocalDateTime startTime;
     protected Duration duration;

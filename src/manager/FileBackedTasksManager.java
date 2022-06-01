@@ -205,8 +205,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
      */
     static String historyToString(HistoryManager manager){
         StringBuilder sb = new StringBuilder();
+        List<Task> list = manager.getHistory();
         if (manager.getHistory().size() != 0){
-            for(Task task : manager.getHistory()){
+            for(Task task : list){
                 sb.append(task.getId()).append(",");
             }
         }
@@ -302,8 +303,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             throw new ManagerSaveException(e.getMessage());
         }
         identifierTask = maxId;
-
-
     }
     /**
      * Восстановление из файла
@@ -314,6 +313,5 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         FileBackedTasksManager manager = new FileBackedTasksManager(file);
         manager.load();
         return manager;
-
     }
 }

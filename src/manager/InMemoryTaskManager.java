@@ -6,7 +6,6 @@ import tasksOfDifferentTypes.Subtask;
 import tasksOfDifferentTypes.Task;
 import utils.Status;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
@@ -48,8 +47,9 @@ public class InMemoryTaskManager implements TaskManager {
             identifierTask++;
             mapTasks.put(task.getId(), task);
 
+        } else {
+            System.out.println("Есть пересечения");
         }
-        System.out.println("Есть пересечения");
         return task.getId();
     }
 
@@ -64,10 +64,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteTaskId(int id) {
-        mapTasks.remove(id);
         if (inMemoryHistoryManager.getHistory().contains(mapTasks.get(id))) {
             inMemoryHistoryManager.remove(id);
         }
+        mapTasks.remove(id);
     }
 
     @Override
@@ -103,10 +103,10 @@ public class InMemoryTaskManager implements TaskManager {
         if (searchForIntersections(subtask)) {
             subtask.setId(identifierTask);
             identifierTask++;
-            mapSubtasks.put(subtask.getId(), subtask);
             if (mapEpics.containsKey(subtask.idEpic)) {
                 statusCalculation(subtask.getEpicId());
             }
+            mapSubtasks.put(subtask.getId(), subtask);
             return subtask.getId();
         } else {
             throw new TasksIntersectionException("У добавляемой задачи неверно указано время старта, есть пересечение. " + subtask);
@@ -134,10 +134,10 @@ public class InMemoryTaskManager implements TaskManager {
                 statusCalculation(idEpic);
             }
         }
-        mapSubtasks.remove(id);
         if (inMemoryHistoryManager.getHistory().contains(mapSubtasks.get(id))) {
             inMemoryHistoryManager.remove(id);
         }
+        mapSubtasks.remove(id);
     }
 
     @Override
@@ -154,7 +154,9 @@ public class InMemoryTaskManager implements TaskManager {
         }
         mapEpics.clear();
         for (Subtask subtask : mapSubtasks.values()) {
-            inMemoryHistoryManager.remove(subtask.getId());
+            if (inMemoryHistoryManager.getHistory().contains(subtask)) {
+                inMemoryHistoryManager.remove(subtask.getId());
+            }
         }
         mapSubtasks.clear();
     }
@@ -198,15 +200,17 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteEpicId(int id) {
-        Epic newEpic = mapEpics.remove(id);
+        Epic newEpic = mapEpics.get(id);
         for (Subtask subtask : newEpic.getSubtask()) {
+            if (inMemoryHistoryManager.getHistory().contains(subtask)) {
+                inMemoryHistoryManager.remove(subtask.getId());
+            }
             mapSubtasks.remove(subtask.getId());
-            inMemoryHistoryManager.remove(subtask.getId());
         }
-        mapEpics.remove(id);
         if (inMemoryHistoryManager.getHistory().contains(mapEpics.get(id))) {
             inMemoryHistoryManager.remove(id);
         }
+        mapEpics.remove(id);
     }
 
     @Override
@@ -269,9 +273,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-//    throw new TasksIntersectionException("Предыдущая задача не закончена " + tasks.get(i) + " . Невозможно " +
-//            "начать следующую " + tasks.get(i + 1));
-
     /**
      * Поиск пересечений
      */
@@ -303,7 +304,6 @@ public class InMemoryTaskManager implements TaskManager {
                 }
             }
             return false;
-//            throw new TasksIntersectionException("У добавляемой задачи неверно указано время старта, есть пересечение.");
         } else {
             return true;
         }
