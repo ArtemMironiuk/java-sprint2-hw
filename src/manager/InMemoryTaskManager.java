@@ -27,7 +27,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTasks() {
         for (Task task : mapTasks.values()) {
-            inMemoryHistoryManager.remove(task.getId());
+            if (inMemoryHistoryManager.getHistory().contains(task)) {
+                inMemoryHistoryManager.remove(task.getId());
+            }
         }
         mapTasks.clear();
     }
@@ -45,10 +47,10 @@ public class InMemoryTaskManager implements TaskManager {
             task.setId(identifierTask);
             identifierTask++;
             mapTasks.put(task.getId(), task);
-            return task.getId();
-        } else {
-            throw new TasksIntersectionException("У добавляемой задачи неверно указано время старта, есть пересечение. " + task);
+
         }
+        System.out.println("Есть пересечения");
+        return task.getId();
     }
 
     @Override
@@ -63,7 +65,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTaskId(int id) {
         mapTasks.remove(id);
-        inMemoryHistoryManager.remove(id);
+        if (inMemoryHistoryManager.getHistory().contains(mapTasks.get(id))) {
+            inMemoryHistoryManager.remove(id);
+        }
     }
 
     @Override
@@ -74,7 +78,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteSubtasks() {
         for (Subtask subtask : mapSubtasks.values()) {
+            if (inMemoryHistoryManager.getHistory().contains(subtask)) {
             inMemoryHistoryManager.remove(subtask.getId());
+            }
             statusCalculation(subtask.getEpicId());
         }
         mapSubtasks.clear();
@@ -129,7 +135,9 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
         mapSubtasks.remove(id);
-        inMemoryHistoryManager.remove(id);
+        if (inMemoryHistoryManager.getHistory().contains(mapSubtasks.get(id))) {
+            inMemoryHistoryManager.remove(id);
+        }
     }
 
     @Override
@@ -140,7 +148,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteEpics() {
         for (Epic epic : mapEpics.values()) {
-            inMemoryHistoryManager.remove(epic.getId());
+            if (inMemoryHistoryManager.getHistory().contains(epic)) {
+                inMemoryHistoryManager.remove(epic.getId());
+            }
         }
         mapEpics.clear();
         for (Subtask subtask : mapSubtasks.values()) {
@@ -194,7 +204,9 @@ public class InMemoryTaskManager implements TaskManager {
             inMemoryHistoryManager.remove(subtask.getId());
         }
         mapEpics.remove(id);
-        inMemoryHistoryManager.remove(id);
+        if (inMemoryHistoryManager.getHistory().contains(mapEpics.get(id))) {
+            inMemoryHistoryManager.remove(id);
+        }
     }
 
     @Override

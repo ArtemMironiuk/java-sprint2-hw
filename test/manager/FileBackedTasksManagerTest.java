@@ -2,18 +2,15 @@ package manager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tasksOfDifferentTypes.Task;
-
-import java.io.File;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import java.io.File;
 
 class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager>{
 
     @BeforeEach
     void initFileBacked() {
-        taskManager = new FileBackedTasksManager(new File("test.csv"));
+        taskManager = (FileBackedTasksManager) Managers.getDefaultTaskManager();
         super.init();
     }
 
@@ -135,5 +132,15 @@ class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager>{
     @Test
     void getHistory() {
         super.getHistory();
+    }
+    @Test
+    void loadFromFile() {
+        TaskManager manager =FileBackedTasksManager.loadFromFile(new File("test.csv"));
+        assertNotNull(manager);
+        assertEquals(taskManager.getTasks(),manager.getTasks());
+        assertEquals(taskManager.getSubtasks(), manager.getSubtasks());
+        assertEquals(taskManager.getEpics(), manager.getEpics());
+        assertEquals(taskManager.inMemoryHistoryManager.getHistory(), manager.getHistory());
+
     }
 }

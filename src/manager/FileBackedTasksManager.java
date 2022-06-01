@@ -191,7 +191,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                             LocalDateTime.parse(pole[5]), Duration.parse(pole[6]));
                 case SUBTASK:
                     return new Subtask(pole[2], pole[4], Status.valueOf(pole[3]), Integer.parseInt(pole[0]),
-                            Integer.parseInt(pole[5]), LocalDateTime.parse(pole[5]), Duration.parse(pole[6]));
+                            Integer.parseInt(pole[5]), LocalDateTime.parse(pole[6]), Duration.parse(pole[7]));
                 case EPIC:
                     return new Epic(pole[2], pole[4], Status.valueOf(pole[3]), Integer.parseInt(pole[0]));
             }
