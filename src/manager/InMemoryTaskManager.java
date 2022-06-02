@@ -18,25 +18,15 @@ public class InMemoryTaskManager implements TaskManager {
     protected final HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
 
     protected final Set<Task> prioritizedTasks = new TreeSet<>((o1, o2) -> {
-
         if ((o1.getStartTime() != null) && (o2.getStartTime() != null)) {
-
             return o1.getStartTime().compareTo(o2.getStartTime());
-
         } else if (o1.getStartTime() == null) {
-
             return 1;
-
         } else if (o2.getStartTime() == null) {
-
             return -1;
-
         }
-
         return 1;
-
     });
-
 
     @Override
     public List<Task> getTasks() {
@@ -113,11 +103,14 @@ public class InMemoryTaskManager implements TaskManager {
                 prioritizedTasks.remove(subtask);
             }
             statusCalculation(subtask.getEpicId());
+            localDateTimeCalculation(subtask.idEpic);
+
         }
         mapSubtasks.clear();
         for (Epic epic : mapEpics.values()) {
             epic.getSubtask().clear();
             statusCalculation(epic.getId());
+            localDateTimeCalculation(epic.getId());
         }
 
     }
@@ -136,6 +129,7 @@ public class InMemoryTaskManager implements TaskManager {
             identifierTask++;
             if (mapEpics.containsKey(subtask.idEpic)) {
                 statusCalculation(subtask.getEpicId());
+                localDateTimeCalculation(subtask.idEpic);
             }
             mapSubtasks.put(subtask.getId(), subtask);
             prioritizedTasks.add(subtask);
@@ -154,6 +148,7 @@ public class InMemoryTaskManager implements TaskManager {
                 subtask.setEpicId(subtask.idEpic);
                 if (mapEpics.containsKey(subtask.idEpic)) {
                     statusCalculation(subtask.getEpicId());
+                    localDateTimeCalculation(subtask.idEpic);
                 }
             }
         }
@@ -161,19 +156,22 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteSubtaskId(int id) {
-        if (mapSubtasks.get(id).getEpicId() >= 0) {
+        if (mapSubtasks.get(id).getEpicId() > 0) {
             int idEpic = mapSubtasks.get(id).getEpicId();
+            if (inMemoryHistoryManager.getHistory().contains(mapSubtasks.get(id))) {
+                inMemoryHistoryManager.remove(id);
+            }
+            if (prioritizedTasks.contains(mapSubtasks.get(id))) {
+                prioritizedTasks.remove(mapSubtasks.get(id));
+            }
+            mapSubtasks.remove(id);
             if (mapEpics.containsKey(idEpic)) {
+                Epic epic = mapEpics.get(idEpic);
                 statusCalculation(idEpic);
+                epic.getSubtask().remove(mapSubtasks.get(id));
+                localDateTimeCalculation(idEpic);
             }
         }
-        if (inMemoryHistoryManager.getHistory().contains(mapSubtasks.get(id))) {
-            inMemoryHistoryManager.remove(id);
-        }
-        if (prioritizedTasks.contains(mapSubtasks.get(id))) {
-            prioritizedTasks.remove(mapSubtasks.get(id));
-        }
-        mapSubtasks.remove(id);
     }
 
     @Override
@@ -214,6 +212,7 @@ public class InMemoryTaskManager implements TaskManager {
             value.setEpicId(epic.getId());
         }
         statusCalculation(epic.getId());
+        localDateTimeCalculation(epic.getId());
         return epic.getId();
     }
 
@@ -231,6 +230,7 @@ public class InMemoryTaskManager implements TaskManager {
                 value.setEpicId(epic.getId());
             }
             statusCalculation(newEpic.getId());
+            localDateTimeCalculation(newEpic.getId());
         }
     }
 
@@ -295,14 +295,15 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    /**
+     * Рассчет начала, продолжительности и конца Epic
+     * @param id
+     */
     private void localDateTimeCalculation(int id){
-        for (Epic epic : mapEpics.values()) {
-            if (epic.getSubtask().isEmpty()) {
-                epic.getStartTime();
-                epic.getDuration();
-                epic.getEndTime();
-            }
-        }
+        Epic epic = mapEpics.get(id);
+        epic.calculateStartTime();
+        epic.calculateDuration();
+        epic.calculateEndTime();
     }
 
     /**

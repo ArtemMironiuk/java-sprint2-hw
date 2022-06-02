@@ -28,9 +28,10 @@ public class Epic extends Task {
     public void setSubtask(ArrayList<Subtask> subtasks) {
         this.subtasks = subtasks;
     }
-
-    @Override
-    public LocalDateTime getStartTime() {
+    /**
+     * Рассчет времени начала Epic
+     */
+    public void calculateStartTime() {
         if (!subtasks.isEmpty()) {
             startTime = subtasks.get(0).getStartTime();
             if (subtasks.size() > 0) {
@@ -41,22 +42,22 @@ public class Epic extends Task {
                 }
             }
         }
-        return startTime;
     }
-
-    @Override
-    public Duration getDuration() {
-        Duration sumDuration = Duration.ofMinutes(0);
+    /**
+     * Рассчет продолжительности Epic
+     */
+    public void calculateDuration() {
+        duration = Duration.ofMinutes(0);
         if (!subtasks.isEmpty()) {
             for (Subtask value : subtasks) {
-                sumDuration = sumDuration.plus(value.getDuration());
+                duration = duration.plus(value.getDuration());
             }
         }
-        return sumDuration;
     }
-
-    @Override
-    public LocalDateTime getEndTime() {
+    /**
+     * Рассчет времени окончания Epic
+     */
+    public void calculateEndTime() {
         if (!subtasks.isEmpty()) {
             this.endTime = subtasks.get(0).getEndTime();
             if (subtasks.size() > 0) {
@@ -67,7 +68,6 @@ public class Epic extends Task {
                 }
             }
         }
-        return endTime;
     }
 
     public TypeTasks getType() {
@@ -99,7 +99,7 @@ public class Epic extends Task {
                 ", id=" + getId() + '\'' +
                 ", startTime='" + getStartTime() + '\'' +
                 ", duration='" + getDuration() + '\'' +
-                ", endTime='" + getEndTime() + '\'' +
+                ", endTime='" + endTime + '\'' +
                 ", subtask=" + subtasks +
                 '}';
     }
