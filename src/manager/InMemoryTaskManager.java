@@ -17,6 +17,26 @@ public class InMemoryTaskManager implements TaskManager {
 
     protected final HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
 
+    protected final Set<Task> prioritizedTasks = new TreeSet<>((o1, o2) -> {
+
+        if ((o1.getStartTime() != null) && (o2.getStartTime() != null)) {
+
+            return o1.getStartTime().compareTo(o2.getStartTime());
+
+        } else if (o1.getStartTime() == null) {
+
+            return 1;
+
+        } else if (o2.getStartTime() == null) {
+
+            return -1;
+
+        }
+
+        return 1;
+
+    });
+
 
     @Override
     public List<Task> getTasks() {
@@ -28,6 +48,9 @@ public class InMemoryTaskManager implements TaskManager {
         for (Task task : mapTasks.values()) {
             if (inMemoryHistoryManager.getHistory().contains(task)) {
                 inMemoryHistoryManager.remove(task.getId());
+            }
+            if (prioritizedTasks.contains(task)) {
+                prioritizedTasks.remove(task);
             }
         }
         mapTasks.clear();
@@ -46,6 +69,7 @@ public class InMemoryTaskManager implements TaskManager {
             task.setId(identifierTask);
             identifierTask++;
             mapTasks.put(task.getId(), task);
+            prioritizedTasks.add(task);
 
         } else {
             System.out.println("Есть пересечения");
@@ -58,6 +82,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (searchForIntersections(task)) {
             if (mapTasks.containsKey(task.getId())) {
                 mapTasks.put(task.getId(), task);
+                prioritizedTasks.add(task);
             }
         }
     }
@@ -66,6 +91,9 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteTaskId(int id) {
         if (inMemoryHistoryManager.getHistory().contains(mapTasks.get(id))) {
             inMemoryHistoryManager.remove(id);
+        }
+        if (prioritizedTasks.contains(mapTasks.get(id))){
+            prioritizedTasks.remove(mapTasks.get(id));
         }
         mapTasks.remove(id);
     }
@@ -79,7 +107,10 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteSubtasks() {
         for (Subtask subtask : mapSubtasks.values()) {
             if (inMemoryHistoryManager.getHistory().contains(subtask)) {
-            inMemoryHistoryManager.remove(subtask.getId());
+                inMemoryHistoryManager.remove(subtask.getId());
+            }
+            if (prioritizedTasks.contains(subtask)) {
+                prioritizedTasks.remove(subtask);
             }
             statusCalculation(subtask.getEpicId());
         }
@@ -107,6 +138,7 @@ public class InMemoryTaskManager implements TaskManager {
                 statusCalculation(subtask.getEpicId());
             }
             mapSubtasks.put(subtask.getId(), subtask);
+            prioritizedTasks.add(subtask);
             return subtask.getId();
         } else {
             throw new TasksIntersectionException("У добавляемой задачи неверно указано время старта, есть пересечение. " + subtask);
@@ -118,6 +150,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (searchForIntersections(subtask)) {
             if (mapSubtasks.containsKey(subtask.getId())) {
                 mapSubtasks.put(subtask.getId(), subtask);
+                prioritizedTasks.add(subtask);
                 subtask.setEpicId(subtask.idEpic);
                 if (mapEpics.containsKey(subtask.idEpic)) {
                     statusCalculation(subtask.getEpicId());
@@ -136,6 +169,9 @@ public class InMemoryTaskManager implements TaskManager {
         }
         if (inMemoryHistoryManager.getHistory().contains(mapSubtasks.get(id))) {
             inMemoryHistoryManager.remove(id);
+        }
+        if (prioritizedTasks.contains(mapSubtasks.get(id))) {
+            prioritizedTasks.remove(mapSubtasks.get(id));
         }
         mapSubtasks.remove(id);
     }
@@ -226,21 +262,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getPrioritizedTasks() {
-        Set<Task> tasks = new TreeSet<>((o1, o2) -> {
-            if ((o1.getStartTime() != null) && (o2.getStartTime() != null)) {
-                return o1.getStartTime().compareTo(o2.getStartTime());
-            } else if (o1.getStartTime() == null) {
-                return 1;
-            } else if (o2.getStartTime() == null) {
-                return -1;
-            }
-            return 1;
-        });
-
-        tasks.addAll(mapTasks.values());
-        tasks.addAll(mapSubtasks.values());
-
-        return new ArrayList<>(tasks);
+        return new ArrayList<>(prioritizedTasks);
 
     }
 
@@ -269,6 +291,16 @@ public class InMemoryTaskManager implements TaskManager {
 
             } else {
                 mapEpics.get(idEpic).setStatus(Status.IN_PROGRES);
+            }
+        }
+    }
+
+    private void localDateTimeCalculation(int id){
+        for (Epic epic : mapEpics.values()) {
+            if (epic.getSubtask().isEmpty()) {
+                epic.getStartTime();
+                epic.getDuration();
+                epic.getEndTime();
             }
         }
     }
@@ -308,4 +340,5 @@ public class InMemoryTaskManager implements TaskManager {
             return true;
         }
     }
+
 }

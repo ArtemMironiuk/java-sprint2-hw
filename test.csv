@@ -1,7 +1,10 @@
 id,type,name,status,description,epic,startTime,duration,endTime
-1,TASK,Тест,NEW,Описание,2022-06-02T10:33:16.303453,PT15M
-4,EPIC,Тест,IN_PROGRES,Описание
-2,SUBTASK,Тест,NEW,Описание,4,2022-05-26T16:00:10,PT15M
-3,SUBTASK,Тест,DONE,Описание,4,2022-05-27T18:50:10,PT30M
+1,TASK,Тест,NEW,Описание,null,null
+2,TASK,Тест,IN_PROGRES,Описание,2022-05-26T15:50:10,PT30M
+6,EPIC,Тест,IN_PROGRES,Описание
+7,EPIC,Тест,NEW,Описание
+3,SUBTASK,Тест,NEW,Описание,6,2022-05-27T18:00:10,PT15M
+4,SUBTASK,Тест,DONE,Описание,6,2022-05-27T18:50:10,PT30M
+5,SUBTASK,Тест,NEW,Описание,7,2022-05-27T16:50:10,PT50M
 
-1,4,2,
+1,4,6,3,

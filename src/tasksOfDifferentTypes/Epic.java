@@ -10,8 +10,9 @@ import java.util.Objects;
 
 public class Epic extends Task {
     private ArrayList<Subtask> subtasks;
+    protected LocalDateTime endTime;
 
-    public Epic(String name, String description, Status status, int id){
+    public Epic(String name, String description, Status status, int id) {
         super(name, description,status, id);
         subtasks = new ArrayList<>();
     }
@@ -30,12 +31,13 @@ public class Epic extends Task {
 
     @Override
     public LocalDateTime getStartTime() {
-
-        LocalDateTime startTime = subtasks.get(0).getStartTime();
-        if(subtasks.size() > 0) {
-            for (int i = 1; i < subtasks.size(); i++) {
-                if (startTime.isAfter(subtasks.get(i).getStartTime())) {
-                    startTime = subtasks.get(i).getStartTime();
+        if (!subtasks.isEmpty()) {
+            startTime = subtasks.get(0).getStartTime();
+            if (subtasks.size() > 0) {
+                for (int i = 1; i < subtasks.size(); i++) {
+                    if (startTime.isAfter(subtasks.get(i).getStartTime())) {
+                        startTime = subtasks.get(i).getStartTime();
+                    }
                 }
             }
         }
@@ -45,19 +47,23 @@ public class Epic extends Task {
     @Override
     public Duration getDuration() {
         Duration sumDuration = Duration.ofMinutes(0);
-        for (Subtask value : subtasks) {
-            sumDuration = sumDuration.plus(value.getDuration());
+        if (!subtasks.isEmpty()) {
+            for (Subtask value : subtasks) {
+                sumDuration = sumDuration.plus(value.getDuration());
+            }
         }
         return sumDuration;
     }
 
     @Override
     public LocalDateTime getEndTime() {
-        LocalDateTime endTime = subtasks.get(0).getEndTime();
-        if(subtasks.size() > 0) {
-            for (int i = 1; i < subtasks.size(); i++) {
-                if (endTime.isBefore(subtasks.get(i).getEndTime())) {
-                    endTime = subtasks.get(i).getEndTime();
+        if (!subtasks.isEmpty()) {
+            this.endTime = subtasks.get(0).getEndTime();
+            if (subtasks.size() > 0) {
+                for (int i = 1; i < subtasks.size(); i++) {
+                    if (endTime.isBefore(subtasks.get(i).getEndTime())) {
+                        endTime = subtasks.get(i).getEndTime();
+                    }
                 }
             }
         }
@@ -75,12 +81,13 @@ public class Epic extends Task {
         if (!super.equals(o)) return false;
         Epic epic = (Epic) o;
         return
-                Objects.equals(subtasks, epic.subtasks);
+                Objects.equals(subtasks, epic.subtasks) &&
+                        Objects.equals(endTime, epic.endTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), subtasks);
+        return Objects.hash(super.hashCode(), subtasks, endTime);
     }
 
     @Override
