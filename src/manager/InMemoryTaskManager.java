@@ -61,8 +61,6 @@ public class InMemoryTaskManager implements TaskManager {
             mapTasks.put(task.getId(), task);
             prioritizedTasks.add(task);
 
-        } else {
-            System.out.println("Есть пересечения");
         }
         return task.getId();
     }
