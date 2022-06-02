@@ -7,7 +7,6 @@ import tasksOfDifferentTypes.Task;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,12 +28,11 @@ abstract class ManagerTest <T extends TaskManager>{
 
     void init(){
         newTask = new Task("Тест", "Описание",NEW,0, LocalDateTime.now(), Duration.ofMinutes(15));
-        idTask = taskManager.creatingTask(newTask);
+
 
         newSubtask1 = new Subtask("Тест", "Описание", NEW,0, 0,LocalDateTime.of(2022,5,26,16,0,10), Duration.ofMinutes(15));
         newSubtask2 = new Subtask("Тест", "Описание", DONE,0,0,LocalDateTime.of(2022,5,27,18,50,10), Duration.ofMinutes(30));
-        idSubtask1 = taskManager.creatingSubtask(newSubtask1);
-        idSubtask2 = taskManager.creatingSubtask(newSubtask2);
+
 
         ArrayList<Subtask> subtaskList = new ArrayList<>();
         subtaskList.add(newSubtask1);
@@ -43,6 +41,9 @@ abstract class ManagerTest <T extends TaskManager>{
         newEpic = new Epic("Тест", "Описание", NEW, 0,subtaskList);
         newEpic2 = new Epic("Тест", "Описание", NEW, 0);
 
+        idTask = taskManager.creatingTask(newTask);
+        idSubtask1 = taskManager.creatingSubtask(newSubtask1);
+        idSubtask2 = taskManager.creatingSubtask(newSubtask2);
         idEpic = taskManager.creatingEpic(newEpic);
 
         taskManager.getTask(idTask);

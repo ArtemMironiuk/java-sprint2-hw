@@ -219,12 +219,16 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
      * @return
      */
     static List<Integer> historyFromString(String value) {
-        String[] id = value.split(",");
-        List<Integer> history = new ArrayList<>();
-        for (String v : id) {
-            history.add(Integer.valueOf(v));
+        if(!value.equals("")) {
+            String[] id = value.split(",");
+            List<Integer> history = new ArrayList<>();
+            for (String v : id) {
+                history.add(Integer.valueOf(v));
+            }
+            return history;
+        } else {
+            return new ArrayList<>();
         }
-        return history;
     }
     /**
      * Сохранение в файл
@@ -287,15 +291,17 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     break;
                 }
             }
-            String line = reader.readLine(); //читаем историю
-            List<Integer> id = historyFromString(line);
-            for (Integer integer : id) {
-                if (mapTasks.containsKey(integer)) {
-                    inMemoryHistoryManager.add(mapTasks.get(integer));
-                } else if (mapSubtasks.containsKey(integer)) {
-                    inMemoryHistoryManager.add(mapSubtasks.get(integer));
-                } else if (mapEpics.containsKey(integer)) {
-                    inMemoryHistoryManager.add(mapEpics.get(integer));
+            String line = reader.readLine();//читаем историю
+            if (line != null) {
+                List<Integer> id = historyFromString(line);
+                for (Integer integer : id) {
+                    if (mapTasks.containsKey(integer)) {
+                        inMemoryHistoryManager.add(mapTasks.get(integer));
+                    } else if (mapSubtasks.containsKey(integer)) {
+                        inMemoryHistoryManager.add(mapSubtasks.get(integer));
+                    } else if (mapEpics.containsKey(integer)) {
+                        inMemoryHistoryManager.add(mapEpics.get(integer));
+                    }
                 }
             }
 

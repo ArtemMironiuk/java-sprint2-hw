@@ -279,7 +279,7 @@ public class InMemoryTaskManager implements TaskManager {
     private boolean searchForIntersections(Task task) {
         if ((task.getStartTime() != null) && (task.getDuration() != null)) {
             List<Task> tasks = getPrioritizedTasks();
-            if(tasks.isEmpty()){
+            if (tasks.isEmpty()){
                 return true;
             }
             Task getTask = tasks.get(0);
@@ -287,7 +287,7 @@ public class InMemoryTaskManager implements TaskManager {
                 if (task.getEndTime().isBefore(getTask.getStartTime())) {
                     return true;
                 }
-            }else {
+            } else {
                 return true;
             }
             for (int i = 0; i < tasks.size() - 1; i++) {
@@ -297,7 +297,7 @@ public class InMemoryTaskManager implements TaskManager {
                             if (task.getEndTime().isBefore(tasks.get(i + 1).getStartTime())) {
                                 return true;
                             }
-                        }else {
+                        } else {
                             return true;
                         }
                     }

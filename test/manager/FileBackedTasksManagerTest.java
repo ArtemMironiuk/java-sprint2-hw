@@ -2,9 +2,11 @@ package manager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tasksOfDifferentTypes.Task;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
+import java.util.List;
 
 class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager>{
 
@@ -140,8 +142,42 @@ class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager>{
         assertNotNull(manager,"Нет сохранения");
         assertEquals(taskManager.getTasks(),manager.getTasks());
         assertEquals(taskManager.getSubtasks(), manager.getSubtasks());
-//        assertEquals(taskManager.getEpics(), manager.getEpics());
-//        assertEquals(taskManager.inMemoryHistoryManager.getHistory(), manager.getHistory());
+        assertEquals(taskManager.getEpics(), manager.getEpics());
+        assertEquals(taskManager.inMemoryHistoryManager.getHistory(), manager.getHistory());
 
+    }
+
+    @Test
+    void loadFromEmptyTasksFile() {
+        taskManager.deleteTasks();
+        taskManager.deleteEpics();
+        taskManager.deleteSubtasks();
+        System.out.println(taskManager.getTasks());
+
+        TaskManager manager = FileBackedTasksManager.loadFromFile(new File("test.csv"));
+        assertNotNull(manager,"Нет сохранения");
+        assertEquals(taskManager.getTasks(),manager.getTasks());
+        assertEquals(taskManager.getSubtasks(), manager.getSubtasks());
+        assertEquals(taskManager.getEpics(), manager.getEpics());
+        assertEquals(taskManager.inMemoryHistoryManager.getHistory(), manager.getHistory());
+    }
+
+    @Test
+    void loadFromEmptyHistoryFile() {
+        taskManager.deleteTasks();
+        taskManager.deleteEpics();
+        taskManager.deleteSubtasks();
+        idTask = taskManager.creatingTask(newTask);
+        idSubtask1 = taskManager.creatingSubtask(newSubtask1);
+        idSubtask2 = taskManager.creatingSubtask(newSubtask2);
+        idEpic = taskManager.creatingEpic(newEpic);
+
+        TaskManager manager = FileBackedTasksManager.loadFromFile(new File("test.csv"));
+        assertNotNull(manager,"Нет сохранения");
+        assertEquals(0, manager.getHistory().size());
+        assertEquals(taskManager.getTasks(),manager.getTasks());
+        assertEquals(taskManager.getSubtasks(), manager.getSubtasks());
+        assertEquals(taskManager.getEpics(), manager.getEpics());
+        assertEquals(taskManager.getHistory(), manager.getHistory());
     }
 }

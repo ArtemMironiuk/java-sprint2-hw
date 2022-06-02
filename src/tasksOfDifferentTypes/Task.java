@@ -108,13 +108,12 @@ public class Task{
                 Objects.equals(description, task.description) &&
                 status == task.status &&
                 Objects.equals(startTime, task.startTime) &&
-                Objects.equals(duration, task.duration) &&
-                Objects.equals(endTime, task.endTime);
+                Objects.equals(duration, task.duration);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, status, id, startTime, duration, endTime);
+        return Objects.hash(name, description, status, id, startTime, duration);
     }
 
     @Override
