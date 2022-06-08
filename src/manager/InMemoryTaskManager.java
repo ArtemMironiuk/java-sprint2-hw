@@ -189,6 +189,9 @@ public class InMemoryTaskManager implements TaskManager {
             if (inMemoryHistoryManager.getHistory().contains(subtask)) {
                 inMemoryHistoryManager.remove(subtask.getId());
             }
+            if (prioritizedTasks.contains(subtask)) {
+                prioritizedTasks.remove(subtask);
+            }
         }
         mapSubtasks.clear();
     }
