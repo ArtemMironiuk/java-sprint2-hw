@@ -16,7 +16,10 @@ import java.util.Map;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
-    private final File file;
+    private File file;
+
+    public FileBackedTasksManager() {
+    }
 
     public FileBackedTasksManager(File file) {
         this.file = file;
@@ -233,7 +236,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     /**
      * Сохранение в файл
      */
-    private void save(){
+    protected void save(){
         try (final BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.append("id,type,name,status,description,epic,startTime,duration,endTime");
             writer.newLine();
@@ -260,7 +263,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     /**
      * Восстановление из файла
      */
-    private void load() {
+    protected void load() {
         int maxId = 0;
         try (final BufferedReader reader = new BufferedReader(new FileReader(file))) {
             reader.readLine();//Пропускаем заголовок
