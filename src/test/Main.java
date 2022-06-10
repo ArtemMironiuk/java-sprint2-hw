@@ -10,6 +10,7 @@ import tasksOfDifferentTypes.Task;
 import utils.Status;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import static utils.Status.DONE;
 import static utils.Status.NEW;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         TaskManager manager = Managers.getDefaultTaskManager();
       //  TaskManager manager1 = FileBackedTasksManager.loadFromFile(new File("test.csv"));

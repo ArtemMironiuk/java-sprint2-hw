@@ -6,138 +6,139 @@ import tasksOfDifferentTypes.Task;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager>{
 
     @BeforeEach
-    void initFileBacked() {
+    void initFileBacked() throws IOException, InterruptedException {
         taskManager = (FileBackedTasksManager) Managers.getDefaultTaskManager();
         super.init();
     }
 
     @Override
     @Test
-    void getTasks() {
+    void getTasks() throws IOException, InterruptedException {
         super.getTasks();
     }
 
     @Override
     @Test
-    void deleteTasks() {
+    void deleteTasks() throws IOException, InterruptedException {
         super.deleteTasks();
     }
 
     @Override
     @Test
-    void getTask() {
+    void getTask() throws IOException, InterruptedException {
         super.getTask();
     }
 
     @Override
     @Test
-    void creatingTask() {
+    void creatingTask() throws IOException, InterruptedException {
         super.creatingTask();
     }
 
     @Override
     @Test
-    void updateTask() {
+    void updateTask() throws IOException, InterruptedException {
         super.updateTask();
     }
 
     @Override
     @Test
-    void deleteTaskId() {
+    void deleteTaskId() throws IOException, InterruptedException {
         super.deleteTaskId();
     }
 
     @Override
     @Test
-    void getSubtasks() {
+    void getSubtasks() throws IOException, InterruptedException {
         super.getSubtasks();
     }
 
     @Override
     @Test
-    void deleteSubtasks() {
+    void deleteSubtasks() throws IOException, InterruptedException {
         super.deleteSubtasks();
     }
 
     @Override
     @Test
-    void getSubtask() {
+    void getSubtask() throws IOException, InterruptedException {
         super.getSubtask();
     }
 
     @Override
     @Test
-    void creatingSubtask() {
+    void creatingSubtask() throws IOException, InterruptedException {
         super.creatingSubtask();
     }
 
     @Override
     @Test
-    void updateSubtask() {
+    void updateSubtask() throws IOException, InterruptedException {
         super.updateSubtask();
     }
 
     @Override
     @Test
-    void deleteSubtaskId() {
+    void deleteSubtaskId() throws IOException, InterruptedException {
         super.deleteSubtaskId();
     }
 
     @Override
     @Test
-    void getEpics() {
+    void getEpics() throws IOException, InterruptedException {
         super.getEpics();
     }
 
     @Override
     @Test
-    void deleteEpics() {
+    void deleteEpics() throws IOException, InterruptedException {
         super.deleteEpics();
     }
 
     @Override
     @Test
-    void getEpic() {
+    void getEpic() throws IOException, InterruptedException {
         super.getEpic();
     }
 
     @Override
     @Test
-    void creatingEpic() {
+    void creatingEpic() throws IOException, InterruptedException {
         super.creatingEpic();
     }
 
     @Override
     @Test
-    void updateEpic() {
+    void updateEpic() throws IOException, InterruptedException {
         super.updateEpic();
     }
 
     @Override
     @Test
-    void deleteEpicId() {
+    void deleteEpicId() throws IOException, InterruptedException {
         super.deleteEpicId();
     }
 
     @Override
     @Test
-    void getSubtasksEpic() {
+    void getSubtasksEpic() throws IOException, InterruptedException {
         super.getSubtasksEpic();
     }
 
     @Override
     @Test
-    void getHistory() {
+    void getHistory() throws IOException, InterruptedException {
         super.getHistory();
     }
 
     @Test
-    void loadFromFile() {
+    void loadFromFile() throws IOException, InterruptedException {
         TaskManager manager = FileBackedTasksManager.loadFromFile(new File("test.csv"));
         assertNotNull(manager,"Нет сохранения");
         assertEquals(taskManager.getTasks(),manager.getTasks());
@@ -148,7 +149,7 @@ class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager>{
     }
 
     @Test
-    void loadFromEmptyTasksFile() {
+    void loadFromEmptyTasksFile() throws IOException, InterruptedException {
         taskManager.deleteTasks();
         taskManager.deleteEpics();
         taskManager.deleteSubtasks();
@@ -163,7 +164,7 @@ class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager>{
     }
 
     @Test
-    void loadFromEmptyHistoryFile() {
+    void loadFromEmptyHistoryFile() throws IOException, InterruptedException {
         taskManager.deleteTasks();
         taskManager.deleteEpics();
         taskManager.deleteSubtasks();

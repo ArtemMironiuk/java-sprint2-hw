@@ -5,6 +5,7 @@ import tasksOfDifferentTypes.Epic;
 import tasksOfDifferentTypes.Subtask;
 import tasksOfDifferentTypes.Task;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ abstract class ManagerTest <T extends TaskManager>{
     protected int idSubtask2;
     protected int idEpic;
 
-    void init(){
+    void init() throws IOException, InterruptedException {
         newTask = new Task("Тест", "Описание",NEW,0, LocalDateTime.now(), Duration.ofMinutes(15));
 
 
@@ -52,7 +53,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void getTasks() {
+    void getTasks() throws IOException, InterruptedException {
         final List<Task> tasks = taskManager.getTasks();
 
         assertNotNull(tasks, "Задачи не возвращаются");
@@ -62,7 +63,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void deleteTasks() {
+    void deleteTasks() throws IOException, InterruptedException {
         taskManager.deleteTasks();
         final List<Task> tasks = taskManager.getTasks();
         final List<Task> tasksHistory = taskManager.getHistory();
@@ -73,7 +74,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void getTask() {
+    void getTask() throws IOException, InterruptedException {
         Task task = taskManager.getTask(idTask);
         List<Task> tasksHistory = taskManager.getHistory();
         assertNotNull(task);
@@ -84,14 +85,14 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void creatingTask() {
+    void creatingTask() throws IOException, InterruptedException {
         assertNotNull(taskManager.getTasks());
         assertEquals(newTask,taskManager.getTask(idTask));
         assertEquals(1, taskManager.getTasks().size());
     }
 
     @Test
-    void updateTask() {
+    void updateTask() throws IOException, InterruptedException {
         Task newTask1 = new Task("Тест", "Описание", NEW, 1, LocalDateTime.of(2022, 5,
                 29, 16, 0, 10), Duration.ofMinutes(15));
         taskManager.updateTask(newTask1);
@@ -101,7 +102,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void deleteTaskId() {
+    void deleteTaskId() throws IOException, InterruptedException {
         taskManager.deleteTaskId(idTask);
         final Task task = taskManager.getTask(idTask);
         final List<Task> tasksHistory = taskManager.getHistory();
@@ -111,7 +112,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void getSubtasks() {
+    void getSubtasks() throws IOException, InterruptedException {
         final List<Subtask> subtasks = taskManager.getSubtasks();
 
         assertNotNull(subtasks);
@@ -123,7 +124,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void deleteSubtasks() {
+    void deleteSubtasks() throws IOException, InterruptedException {
         taskManager.deleteSubtasks();
         final List<Subtask> subtasks = taskManager.getSubtasks();
         final List<Task> subtasksHistory = taskManager.getHistory();
@@ -140,7 +141,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void getSubtask() {
+    void getSubtask() throws IOException, InterruptedException {
         final Subtask subtask = taskManager.getSubtask(idSubtask1);
         final List<Task> subtaskHistory = taskManager.getHistory();
 
@@ -152,7 +153,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void creatingSubtask() {
+    void creatingSubtask() throws IOException, InterruptedException {
         final Epic epic = taskManager.getEpic(newSubtask1.idEpic);
         assertNotNull(taskManager.getSubtasks());
         assertEquals(newSubtask1,taskManager.getSubtask(idSubtask1));
@@ -161,7 +162,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void updateSubtask() {
+    void updateSubtask() throws IOException, InterruptedException {
         Subtask newSubtask3 = new Subtask("Тест", "Описание", NEW, 2, 4,LocalDateTime.of
                 (2022, 5, 23, 16, 0, 10), Duration.ofMinutes(15));
         taskManager.updateSubtask(newSubtask3);
@@ -172,7 +173,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void deleteSubtaskId() {
+    void deleteSubtaskId() throws IOException, InterruptedException {
         taskManager.deleteSubtaskId(idSubtask1);
         final Subtask subtask = taskManager.getSubtask(idSubtask1);
         final List<Task> subtasksHistory = taskManager.getHistory();
@@ -182,7 +183,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void getEpics() {
+    void getEpics() throws IOException, InterruptedException {
         final List<Epic> epics = taskManager.getEpics();
 
         assertNotNull(epics);
@@ -192,7 +193,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void deleteEpics() {
+    void deleteEpics() throws IOException, InterruptedException {
 
         taskManager.deleteEpics();
         final List<Epic> epics = taskManager.getEpics();
@@ -210,7 +211,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void getEpic() {
+    void getEpic() throws IOException, InterruptedException {
         final Epic epic = taskManager.getEpic(idEpic);
         final List<Task> list =taskManager.getHistory();
 
@@ -221,7 +222,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void creatingEpic() {
+    void creatingEpic() throws IOException, InterruptedException {
         int idEpic2 = taskManager.creatingEpic(newEpic2);
         assertEquals(NEW, newEpic2.getStatus());
         assertEquals(5,idEpic2);
@@ -232,7 +233,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void updateEpic() {
+    void updateEpic() throws IOException, InterruptedException {
         Subtask subtask = new Subtask("Тест", "Описание", DONE,0,0,LocalDateTime.of(2022,5,31,18,50,10), Duration.ofMinutes(30));
         ArrayList<Subtask> listSub = new ArrayList<>();
         listSub.add(subtask);
@@ -245,7 +246,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void deleteEpicId() {
+    void deleteEpicId() throws IOException, InterruptedException {
         taskManager.deleteEpicId(idEpic);
         final Epic epic = taskManager.getEpic(idEpic);
         final List<Task> epicsHistory = taskManager.getHistory();
@@ -256,7 +257,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void getSubtasksEpic() {
+    void getSubtasksEpic() throws IOException, InterruptedException {
         final ArrayList<Subtask> subtasks = taskManager.getSubtasksEpic(newEpic);
         assertNotNull(subtasks);
         assertEquals(2,subtasks.size());
@@ -265,7 +266,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void getHistory() {
+    void getHistory() throws IOException, InterruptedException {
         final List<Task> tasksHistory = taskManager.getHistory();
         assertNotNull(tasksHistory);
         assertEquals(3,tasksHistory.size());
@@ -274,7 +275,7 @@ abstract class ManagerTest <T extends TaskManager>{
     }
 
     @Test
-    void epicWithNewSubtask(){
+    void epicWithNewSubtask() throws IOException, InterruptedException {
         Subtask subtask = new Subtask("Тест", "Описание", NEW,0,7,LocalDateTime.of(2022,6,1,18,50,10), Duration.ofMinutes(30));
         ArrayList<Subtask> listSub = new ArrayList<>();
         listSub.add(subtask);
@@ -284,7 +285,7 @@ abstract class ManagerTest <T extends TaskManager>{
 
     }
     @Test
-    void getPrioritizedTasks() {
+    void getPrioritizedTasks() throws IOException, InterruptedException {
         Task newTask1 = new Task("Тест", "Описание",NEW,0);
         Task newTask2 = new Task("Тест", "Описание",NEW,0);
         Task newTask3 = new Task("Тест", "Описание",NEW,0, LocalDateTime.now(), Duration.ofMinutes(15));
