@@ -15,10 +15,6 @@ import java.util.List;
 public class HttpTaskManager extends FileBackedTasksManager {
     URI url;
     KVClient kvClient;
-//    protected final HashMap<String, String> jsonMapTasks = new HashMap<>();
-//    protected final HashMap<String, String> jsonMapSubtasks = new HashMap<>();
-//    protected final HashMap<String, String> jsonMapEpics = new HashMap<>();
-//
 
     public HttpTaskManager(URI url) throws IOException, InterruptedException {
         this.url = url;
@@ -134,23 +130,23 @@ public class HttpTaskManager extends FileBackedTasksManager {
         return super.getPrioritizedTasks();
     }
 
-    //запись
-//    @Override
-//    protected void save() throws IOException, InterruptedException {
+//    запись
+    @Override
+    protected void save() throws IOException, InterruptedException {
 //        kvClient.save("Tasks", "все задачи");
 //        kvClient.save("Subtasks","все подзадачи");
 //        kvClient.save("Epics","все эпики");
 //        kvClient.save("History","вся история");
 //        super.save();
-//    }
+    }
 
     //чтение
     @Override
     protected void load() throws IOException, InterruptedException {
-        kvClient.load("Tasks");
-        kvClient.load("Subtasks");
-        kvClient.load("Epics");
-        kvClient.load("History");
-        super.load();
+//        kvClient.load("Tasks");
+//        kvClient.load("Subtasks");
+//        kvClient.load("Epics");
+//        kvClient.load("History");
+//        super.load();
     }
 }

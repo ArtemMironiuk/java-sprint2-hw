@@ -71,14 +71,19 @@ public class KVClient {
         return json;
     }
 
-    //запись
-//    void save(String key, String value) throws IOException, InterruptedException {
-//        final
-//        URI url = URI.create("http://localhost:8078/save/{" + key + "}?API_TOKEN=" + token );
-//        HttpRequest request =HttpRequest.newBuilder()
-//                .uri(url)
-//                .POST()
-//                .build();
-//        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
-//    }
+   // запись
+    void save(String key, String value) throws IOException, InterruptedException {
+        final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(value);
+        URI url = URI.create("http://localhost:8078/save/{" + key + "}?API_TOKEN=" + token );
+        HttpRequest request =HttpRequest.newBuilder()
+                .uri(url)
+                .POST(body)
+                .build();
+        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
+        try {
+            client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (NullPointerException | InterruptedException | IOException e) {
+            System.out.println("Во время выполнения POST запроса возникла ошибка.\n" + "Проверьте, пожалуйста, адрес и повторите попытку.");
+        }
+    }
 }
