@@ -155,6 +155,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         save();
         return history;
     }
+
+    @Override
+    public List<Task> getPrioritizedTasks() {
+        return super.getPrioritizedTasks();
+    }
+
     /**
      * Из задачи в строку
      * @param task

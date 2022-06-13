@@ -1,5 +1,10 @@
 package http;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import json.DurationAdapter;
+import json.LocalDateTimeAdapter;
 import manager.FileBackedTasksManager;
 import tasksOfDifferentTypes.Epic;
 import tasksOfDifferentTypes.Subtask;
@@ -8,6 +13,8 @@ import tasksOfDifferentTypes.Task;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +30,12 @@ public class HttpTaskManager extends FileBackedTasksManager {
 
     public HttpTaskManager() {
         super();
+    }
+    public static Gson getGson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
+        gsonBuilder.registerTypeAdapter(Duration.class, new DurationAdapter());
+        return gsonBuilder.create();
     }
 
     @Override
@@ -133,20 +146,34 @@ public class HttpTaskManager extends FileBackedTasksManager {
 //    запись
     @Override
     protected void save() throws IOException, InterruptedException {
-//        kvClient.save("Tasks", "все задачи");
-//        kvClient.save("Subtasks","все подзадачи");
-//        kvClient.save("Epics","все эпики");
-//        kvClient.save("History","вся история");
+        Gson gson = getGson();
+//        final String jsonMapTasks = gson.toJson(mapTasks);
+//        final String jsonMapSubtasks = gson.toJson(mapSubtasks);
+//        final String jsonMapEpics = gson.toJson(mapEpics);
+//        final String jsonListHistory = gson.toJson(inMemoryHistoryManager.getHistory());
+//        kvClient.save("Tasks", jsonMapTasks);
+//        kvClient.save("Subtasks",jsonMapSubtasks);
+//        kvClient.save("Epics",jsonMapEpics);
+//        kvClient.save("History",jsonListHistory);
 //        super.save();
     }
 
     //чтение
     @Override
     protected void load() throws IOException, InterruptedException {
-//        kvClient.load("Tasks");
-//        kvClient.load("Subtasks");
-//        kvClient.load("Epics");
-//        kvClient.load("History");
+        Gson gson = getGson();
+//        String jsonTasks = kvClient.load("Tasks");
+//        String jsonSubtasks = kvClient.load("Subtasks");
+//        String jsonEpics = kvClient.load("Epics");
+//        String jsonHistory = kvClient.load("History");
 //        super.load();
+//        mapTasks = gson.fromJson(jsonTasks, new TypeToken<HashMap <Integer, Task>>() {
+//        }.getType());
+//        mapSubtasks = gson.fromJson(jsonTasks, new TypeToken<HashMap <Integer, Subtask>>() {
+//        }.getType());
+//        mapEpics = gson.fromJson(jsonTasks, new TypeToken<HashMap <Integer, Epic>>() {
+//        }.getType());
+//         = gson.fromJson(jsonTasks, new TypeToken<HashMap <Integer, Task>>() {
+//        }.getType());
     }
 }
