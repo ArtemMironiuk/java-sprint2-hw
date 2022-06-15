@@ -11,8 +11,8 @@
      */
     public class Managers {
 
-        public static TaskManager getDefaultTaskManager() throws IOException, InterruptedException {
-            return new HttpTaskManager(URI.create("http://localhost:8078/"));
+        public static TaskManager getDefaultTaskManager()  {
+            return new HttpTaskManager("http://localhost:8078/");
         }
 
         public static HistoryManager getDefaultHistory(){

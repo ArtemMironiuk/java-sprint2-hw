@@ -17,71 +17,69 @@ import java.time.LocalDateTime;
 public class KVClient {
     String token;  //KVServer register
     HttpClient client;
-
-    public static Gson getGson() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
-        gsonBuilder.registerTypeAdapter(Duration.class, new DurationAdapter());
-        return gsonBuilder.create();
-    }
+    String url;
 
     //регистрация
-    public KVClient() throws IOException, InterruptedException {
-        KVServer server = new KVServer();
-        server.start();
+    public KVClient(String url) {
+        this.url = url;
         client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8078/register");
+        URI url1 = URI.create(url + "/register");
         HttpRequest request =HttpRequest.newBuilder()
-                .uri(url)
+                .uri(url1)
                 .GET()
                 .build();
-        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
-        if (response.statusCode() == 200) {
-            if (!response.body().isEmpty()){
-                token = response.body();
-                System.out.println(token);
+        try {
+            HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                if (!response.body().isEmpty()){
+                    token = response.body();
+                    System.out.println(token);
+                }
+            } else {
+                System.out.println("Что то пошло не так " + response.statusCode());
             }
-        } else {
-            System.out.println("Что то пошло не так " + response.statusCode());
+        } catch (IOException|InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
 
     //чтение
-    String load(String key) throws IOException, InterruptedException { //tasks,epics,subtasks,history
-        final  Gson gson = getGson();
+    String load(String key) { //tasks,epics,subtasks,history
         String json = null;
-        URI url = URI.create("http://localhost:8078/load/{" + key + "}?API_TOKEN=" + token );
+        URI uri = URI.create(url + "/load/" + key + "?API_TOKEN=" + token );
         HttpRequest request =HttpRequest.newBuilder()
-                .uri(url)
+                .uri(uri)
                 .GET()
                 .build();
-        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
-        if (response.statusCode() == 200) {
-            if (!response.body().isEmpty()){
-                response.body();
-                json = gson.toJson(response.body());
-
-                System.out.println(json);
+        try {
+            HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                if (!response.body().isEmpty()){
+                    json = response.body();
+                    System.out.println(json);
+                }
+            } else {
+                System.out.println("Что то пошло не так " + response.statusCode());
+                return null;
             }
-        } else {
-            System.out.println("Что то пошло не так " + response.statusCode());
-            return null;
+        } catch (IOException|InterruptedException e) {
+            e.printStackTrace();
         }
+
         return json;
     }
 
    // запись
-    void save(String key, String value) throws IOException, InterruptedException {
+    void put(String key, String value) {
         final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(value);
-        URI url = URI.create("http://localhost:8078/save/{" + key + "}?API_TOKEN=" + token );
+        URI uri = URI.create(url + "/save/" + key + "?API_TOKEN=" + token );
         HttpRequest request =HttpRequest.newBuilder()
-                .uri(url)
+                .uri(uri)
                 .POST(body)
                 .build();
-        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
         try {
-            client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
         } catch (NullPointerException | InterruptedException | IOException e) {
             System.out.println("Во время выполнения POST запроса возникла ошибка.\n" + "Проверьте, пожалуйста, адрес и повторите попытку.");
         }

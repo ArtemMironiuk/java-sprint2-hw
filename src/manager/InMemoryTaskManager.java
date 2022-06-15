@@ -210,8 +210,10 @@ public class InMemoryTaskManager implements TaskManager {
         identifierTask++;
         mapEpics.put(epic.getId(), epic);
         ArrayList<Subtask> subtask = epic.getSubtask();
-        for (Subtask value : subtask) {
-            value.setEpicId(epic.getId());
+        if (subtask != null) {
+            for (Subtask value : subtask) {
+                value.setEpicId(epic.getId());
+            }
         }
         statusCalculation(epic.getId());
         localDateTimeCalculation(epic.getId());
@@ -276,7 +278,7 @@ public class InMemoryTaskManager implements TaskManager {
         int doneCounter = 0;
         ArrayList<Subtask> list;
         list = mapEpics.get(idEpic).getSubtask();
-        if (list.isEmpty()) {
+        if (list == null) {
             mapEpics.get(idEpic).setStatus(Status.NEW);
         } else {
             for (Subtask value : list) {

@@ -28,36 +28,49 @@ import static utils.Status.NEW;
 public class HttpTaskServer { //18 эндпоинтов и в тестах сделать клиента на этот класс
 public static final int PORT = 8080;
 private String id;
+private static final Gson gson = new GsonBuilder()
+        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+        .registerTypeAdapter(Duration.class, new DurationAdapter())
+        .create();
+
     HttpServer httpServer;
     TaskManager manager = Managers.getDefaultTaskManager();
 
-    public HttpTaskServer() throws IOException,InterruptedException {
-        httpServer = HttpServer.create();
-        httpServer.bind(new InetSocketAddress("localhost", PORT), 0);
-        httpServer.start();
-        httpServer.createContext("/tasks/",this::handlerTasks);
-        httpServer.createContext("/tasks/task", this :: handlerTask);
-        httpServer.createContext("/tasks/task/?id=", this::handlerIdTask);
-        httpServer.createContext("/tasks/subtask", this::handlerSubtask);
-        httpServer.createContext("/tasks/subtask/?id=", this::handlerIdSubtask);
-        httpServer.createContext("/tasks/epic",this::handlerEpic);
-        httpServer.createContext("/tasks/epic/?id=",this::handlerIdEpic);
-        httpServer.createContext("/tasks/history",this::handlerHistory);
-        httpServer.createContext("/tasks/prioritized",this::handlerPrioritized);
-        System.out.println("Сервер запущен на 8080 порту");
+    public HttpTaskServer() {
+        try {
+            httpServer = HttpServer.create();
+            httpServer.bind(new InetSocketAddress("localhost", PORT), 0);
+ //           httpServer.createContext("/tasks/",this::handlerTasks);
+            httpServer.createContext("/tasks/task", this :: handlerTask);
+//            httpServer.createContext("/tasks/task/?id=", this::handlerIdTask);
+            httpServer.createContext("/tasks/subtask", this::handlerSubtask);
+//            httpServer.createContext("/tasks/subtask/?id=", this::handlerIdSubtask);
+            httpServer.createContext("/tasks/epic",this::handlerEpic);
+//            httpServer.createContext("/tasks/epic/?id=",this::handlerIdEpic);
+            httpServer.createContext("/tasks/history",this::handlerHistory);
+            httpServer.createContext("/tasks",this::handlerPrioritized);
+            httpServer.createContext("/tasks/subtask/epic", this::handlerSubtaskFromEpic);
+
+        } catch (IOException e) {
+            System.out.println("Сервер не запущен на 8080 порту");
+        }
+
     }
 
-    public static Gson getGson() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
-        gsonBuilder.registerTypeAdapter(Duration.class, new DurationAdapter());
-        return gsonBuilder.create();
+    public void start() {
+        System.out.println("Запускаем сервер на порту " + PORT);
+        System.out.println("Открой в браузере http://localhost:" + PORT + "/");
+        httpServer.start();
+    }
+
+    public void stop() {
+        System.out.println("Сервер остановлен на порту " + PORT);
+        httpServer.stop(0);
     }
 
     protected void handlerTasks(HttpExchange h) {
         try {
             System.out.println(h.getRequestURI());
-            Gson gson = getGson();
             String path = h.getRequestURI().getPath();
             String serializeTasks = null;
             String serializeSubtasks = null;
@@ -91,9 +104,18 @@ private String id;
     protected void handlerTask(HttpExchange h) {
         try {
             System.out.println(h.getRequestURI());
-            Gson gson = getGson();
+
             String path = h.getRequestURI().getPath();
             String serializeTasks = null;
+            String method = h.getRequestMethod();
+//            switch (method) {
+//                case "GET":
+//                    break;
+//                case "POST":
+//                    break;
+//                case "DELETE":
+//                    break;
+//            }
             if ("GET".equals(h.getRequestMethod())) {
                 serializeTasks = gson.toJson(manager.getTasks());
                 h.sendResponseHeaders(200, 0);
@@ -121,6 +143,7 @@ private String id;
                     manager.creatingTask(task);
                 }
                 h.sendResponseHeaders(201,0);
+                //послать боди или команду
 
             } else {
                 System.out.println("/tasks/task ждёт GET, POST, DELETE - запросы, а получил " + h.getRequestMethod());
@@ -137,10 +160,10 @@ private String id;
     protected void handlerIdTask(HttpExchange h) {
         try {
             System.out.println(h.getRequestURI());
-            Gson gson = getGson();
+            //сделать в одном методе с тасками
             String path = h.getRequestURI().getRawQuery();
             String[] split = path.split("=");
-            id = split[2];
+            id = split[1];
             int idParsed = Integer.parseInt(id);
             String serializeTask = null;
             if ("GET".equals(h.getRequestMethod())) {
@@ -185,7 +208,7 @@ private String id;
     protected void handlerSubtask(HttpExchange h) {
         try {
             System.out.println(h.getRequestURI());
-            Gson gson = getGson();
+
             String path = h.getRequestURI().getPath();
             String serializeSubtasks = null;
             if ("GET".equals(h.getRequestMethod())) {
@@ -230,7 +253,7 @@ private String id;
     protected void handlerIdSubtask(HttpExchange h) {
         try {
             System.out.println(h.getRequestURI());
-            Gson gson = getGson();
+
             String path = h.getRequestURI().getRawQuery();
             String[] split = path.split("=");
             id = split[2];
@@ -278,7 +301,6 @@ private String id;
     protected void handlerEpic(HttpExchange h) {
         try {
             System.out.println(h.getRequestURI());
-            Gson gson = getGson();
             String path = h.getRequestURI().getPath();
             String serializeEpic = null;
             if ("GET".equals(h.getRequestMethod())) {
@@ -323,7 +345,7 @@ private String id;
     protected void handlerIdEpic(HttpExchange h) {
         try {
             System.out.println(h.getRequestURI());
-            Gson gson = getGson();
+
             String path = h.getRequestURI().getRawQuery();
             String[] split = path.split("=");
             id = split[2];
@@ -371,7 +393,7 @@ private String id;
     protected void handlerHistory(HttpExchange h) {
         try {
             System.out.println(h.getRequestURI());
-            Gson gson = getGson();
+
             String path = h.getRequestURI().getPath();
             String serializeHistory = null;
             if ("GET".equals(h.getRequestMethod())) {
@@ -396,7 +418,7 @@ private String id;
     protected void handlerPrioritized(HttpExchange h) {
         try {
             System.out.println(h.getRequestURI());
-            Gson gson = getGson();
+
             String path = h.getRequestURI().getPath();
             String serializePrioritizedTasks = null;
             if ("GET".equals(h.getRequestMethod())) {
@@ -423,17 +445,9 @@ private String id;
 
 //    TaskManager manager = Managers.getDefaultTaskManager();
 
-    public static void main(String[] args) throws IOException,InterruptedException {
-        new HttpTaskServer();
-        final  Gson gson = getGson();
-        Task task = new Task("Тест", "Описание",NEW,1, LocalDateTime.now(), Duration.ofMinutes(15));
-        final HashMap<Integer, Task> map = new HashMap<>();
-        map.put(task.getId(), task);
-        final String json = gson.toJson(map);
-        System.out.println(json);
-        final HashMap<Integer, Task> mapRest = gson.fromJson(json, new TypeToken<HashMap <Integer, Task>>() {
-                }.getType());
-        System.out.println(mapRest);
+    public static void main(String[] args) throws IOException {
+        new KVServer().start();
+        new HttpTaskServer().start();
 
 //        сохраняем отдельно задачи, сабтаски и
 

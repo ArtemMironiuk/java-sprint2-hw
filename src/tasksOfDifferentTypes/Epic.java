@@ -32,7 +32,7 @@ public class Epic extends Task {
      * Рассчет времени начала Epic
      */
     public void calculateStartTime() {
-        if (!subtasks.isEmpty()) {
+        if (subtasks != null) {
             startTime = subtasks.get(0).getStartTime();
             if (subtasks.size() > 0) {
                 for (int i = 1; i < subtasks.size(); i++) {
@@ -48,7 +48,7 @@ public class Epic extends Task {
      */
     public void calculateDuration() {
         duration = Duration.ofMinutes(0);
-        if (!subtasks.isEmpty()) {
+        if (subtasks != null) {
             for (Subtask value : subtasks) {
                 duration = duration.plus(value.getDuration());
             }
@@ -58,7 +58,7 @@ public class Epic extends Task {
      * Рассчет времени окончания Epic
      */
     public void calculateEndTime() {
-        if (!subtasks.isEmpty()) {
+        if (subtasks != null) {
             this.endTime = subtasks.get(0).getEndTime();
             if (subtasks.size() > 0) {
                 for (int i = 1; i < subtasks.size(); i++) {

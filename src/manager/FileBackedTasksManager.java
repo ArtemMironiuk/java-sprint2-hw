@@ -17,12 +17,14 @@ import java.util.Map;
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
     private File file;
+    String file1;
 
     public FileBackedTasksManager() {
     }
 
-    public FileBackedTasksManager(File file) {
-        this.file = file;
+    public FileBackedTasksManager(String file1) {
+        this.file1 = file1;
+
     }
 
     @Override
@@ -243,7 +245,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
      * Сохранение в файл
      */
     protected void save() throws IOException, InterruptedException {
-        try (final BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+        try (final BufferedWriter writer = new BufferedWriter(new FileWriter(file1))) {
             writer.append("id,type,name,status,description,epic,startTime,duration,endTime");
             writer.newLine();
             for (Map.Entry<Integer, Task> entry : mapTasks.entrySet()) {
@@ -271,7 +273,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
      */
     protected void load() throws IOException, InterruptedException {
         int maxId = 0;
-        try (final BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (final BufferedReader reader = new BufferedReader(new FileReader(file1))) {
             reader.readLine();//Пропускаем заголовок
 
             while(true) {
@@ -321,11 +323,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
     /**
      * Восстановление из файла
-     * @param file
+     * @param file1
      * @return
      */
-    public static FileBackedTasksManager loadFromFile (File file) throws IOException, InterruptedException {
-        FileBackedTasksManager manager = new FileBackedTasksManager(file);
+    public static FileBackedTasksManager loadFromFile (File file1) throws IOException, InterruptedException {
+        FileBackedTasksManager manager = new FileBackedTasksManager(file1.getName());
         manager.load();
         return manager;
     }
