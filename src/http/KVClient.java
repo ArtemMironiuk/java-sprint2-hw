@@ -15,9 +15,10 @@ import java.time.LocalDateTime;
 
 
 public class KVClient {
-    String token;  //KVServer register
-    HttpClient client;
-    String url;
+    private String token;  //KVServer register
+    private String url;
+    private HttpClient client;
+
 
     //регистрация
     public KVClient(String url) {
@@ -31,10 +32,10 @@ public class KVClient {
         try {
             HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                if (!response.body().isEmpty()){
+//                if (!response.body().isEmpty()){ //попробовать убрать это
                     token = response.body();
                     System.out.println(token);
-                }
+ //               }
             } else {
                 System.out.println("Что то пошло не так " + response.statusCode());
             }
@@ -55,10 +56,10 @@ public class KVClient {
         try {
             HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                if (!response.body().isEmpty()){
+//                if (!response.body().isEmpty()){
                     json = response.body();
                     System.out.println(json);
-                }
+ //               }
             } else {
                 System.out.println("Что то пошло не так " + response.statusCode());
                 return null;

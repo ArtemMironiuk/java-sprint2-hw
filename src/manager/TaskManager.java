@@ -16,93 +16,93 @@
         /**
          * Получение списка всех задач.
          */
-        List<Task> getTasks() throws IOException, InterruptedException;
+        List<Task> getTasks();
         /**
          * Удаление всех задач.
          */
-        void deleteTasks() throws IOException, InterruptedException;
+        void deleteTasks();
         /**
          * Получение задачи по идентификатору.
          */
-        Task getTask(int id) throws IOException, InterruptedException;
+        Task getTask(int id);
         /**
          * Создание.Сам объект должен передаваться в качестве параметра.
          * @param task
          */
-        int creatingTask(Task task) throws IOException, InterruptedException;
+        int creatingTask(Task task);
         /**
          * Обновление. Новая версия объекта с верным идентификатором передаются в виде параметра.
          * @param task
          */
-        void updateTask(Task task) throws IOException, InterruptedException;
+        void updateTask(Task task);
         /**
          * Удаление по идентификатору.
          */
-        void deleteTaskId(int id) throws IOException, InterruptedException;
+        void deleteTaskId(int id);
         /**
          * Получение списка всех подзадач.
          */
-        List<Subtask> getSubtasks() throws IOException, InterruptedException;
+        List<Subtask> getSubtasks();
         /**
          * Удаление всех подзадач.
          */
-        void deleteSubtasks() throws IOException, InterruptedException;
+        void deleteSubtasks();
         /**
          * Получение по идентификатору.
          */
-        Subtask getSubtask(int id) throws IOException, InterruptedException;
+        Subtask getSubtask(int id);
         /**
          * Создание подзадачи.Сам объект должен передаваться в качестве параметра.
          * @param subtask
          */
-        int creatingSubtask(Subtask subtask) throws IOException, InterruptedException;
+        int creatingSubtask(Subtask subtask);
         /**
          * Обновление подзадачи. Новая версия объекта с верным идентификатором передаются в виде параметра.
          * @param subtask
          */
-        void updateSubtask(Subtask subtask) throws IOException, InterruptedException;
+        void updateSubtask(Subtask subtask);
         /**
          * Удаление подзадачи по идентификатору.
          */
-        void deleteSubtaskId(int id) throws IOException, InterruptedException;
+        void deleteSubtaskId(int id);
 
         /**
          * Получение списка всех Epics.
          */
-        List<Epic> getEpics() throws IOException, InterruptedException;
+        List<Epic> getEpics();
         /**
          * Удаление всех Epics.
          */
-        void deleteEpics() throws IOException, InterruptedException;
+        void deleteEpics();
         /**
          * Получение по идентификатору.
          */
-        Epic getEpic(int id) throws IOException, InterruptedException;
+        Epic getEpic(int id);
         /**
          * Создание Epic.Сам объект должен передаваться в качестве параметра.
          * @param epic
          */
-        int creatingEpic(Epic epic) throws IOException, InterruptedException;
+        int creatingEpic(Epic epic);
         /**
          * Обновление tasksOfDifferentTypes.Epic. Новая версия объекта с верным идентификатором передаются в виде параметра.
          * @param epic
          */
-        void updateEpic(Epic epic) throws IOException, InterruptedException;
+        void updateEpic(Epic epic);
         /**
          * Удаление по идентификатору.
          */
-        void deleteEpicId(int id) throws IOException, InterruptedException;
+        void deleteEpicId(int id);
         /**
          * Получение списка всех подзадач определённого эпика.
          * @param epic
          */
-        ArrayList<Subtask> getSubtasksEpic(Epic epic) throws IOException, InterruptedException;
+        ArrayList<Subtask> getSubtasksEpic(Epic epic);
 
         /**
          * Получение истории просмотра задач.
          *
          */
-        List<Task> getHistory() throws IOException, InterruptedException;
+        List<Task> getHistory();
 
         /**
          * Сортировка задач.

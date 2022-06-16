@@ -6,17 +6,16 @@ import tasksOfDifferentTypes.Subtask;
 import tasksOfDifferentTypes.Task;
 import utils.Status;
 
-import java.io.IOException;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     protected int identifierTask = 1;
 
-    protected final HashMap<Integer, Task> mapTasks = new HashMap<>();
-    protected final HashMap<Integer, Subtask> mapSubtasks = new HashMap<>();
-    protected final HashMap<Integer, Epic> mapEpics = new HashMap<>();
+    protected HashMap<Integer, Task> mapTasks = new HashMap<>();
+    protected HashMap<Integer, Subtask> mapSubtasks = new HashMap<>();
+    protected HashMap<Integer, Epic> mapEpics = new HashMap<>();
 
-    protected final HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
+    protected HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
 
     protected final Set<Task> prioritizedTasks = new TreeSet<>((o1, o2) -> {
         if ((o1.getStartTime() != null) && (o2.getStartTime() != null)) {
@@ -30,12 +29,12 @@ public class InMemoryTaskManager implements TaskManager {
     });
 
     @Override
-    public List<Task> getTasks() throws IOException, InterruptedException {
+    public List<Task> getTasks() {
         return new ArrayList<>(mapTasks.values());
     }
 
     @Override
-    public void deleteTasks() throws IOException, InterruptedException {
+    public void deleteTasks() {
         for (Task task : mapTasks.values()) {
             if (inMemoryHistoryManager.getHistory().contains(task)) {
                 inMemoryHistoryManager.remove(task.getId());
@@ -48,14 +47,14 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getTask(int id) throws IOException, InterruptedException {
+    public Task getTask(int id) {
         Task task = mapTasks.get(id);
         inMemoryHistoryManager.add(task);//добавление задачи в историю
         return task;
     }
 
     @Override
-    public int creatingTask(Task task) throws IOException, InterruptedException {
+    public int creatingTask(Task task) {
         if (searchForIntersections(task)) {
             task.setId(identifierTask);
             identifierTask++;
@@ -67,7 +66,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Task task) throws IOException, InterruptedException {
+    public void updateTask(Task task) {
         if (searchForIntersections(task)) {
             if (mapTasks.containsKey(task.getId())) {
                 mapTasks.put(task.getId(), task);
@@ -77,7 +76,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteTaskId(int id) throws IOException, InterruptedException {
+    public void deleteTaskId(int id) {
         if (inMemoryHistoryManager.getHistory().contains(mapTasks.get(id))) {
             inMemoryHistoryManager.remove(id);
         }
@@ -88,12 +87,12 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Subtask> getSubtasks() throws IOException, InterruptedException {
+    public List<Subtask> getSubtasks() {
         return new ArrayList<>(mapSubtasks.values());
     }
 
     @Override
-    public void deleteSubtasks() throws IOException, InterruptedException {
+    public void deleteSubtasks() {
         for (Subtask subtask : mapSubtasks.values()) {
             if (inMemoryHistoryManager.getHistory().contains(subtask)) {
                 inMemoryHistoryManager.remove(subtask.getId());
@@ -115,20 +114,24 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Subtask getSubtask(int id) throws IOException, InterruptedException {
+    public Subtask getSubtask(int id) {
         Subtask subtask = mapSubtasks.get(id);
         inMemoryHistoryManager.add(subtask);
         return subtask;
     }
 
     @Override
-    public int creatingSubtask(Subtask subtask) throws IOException, InterruptedException {
+    public int creatingSubtask(Subtask subtask) {
         if (searchForIntersections(subtask)) {
             subtask.setId(identifierTask);
             identifierTask++;
             if (mapEpics.containsKey(subtask.idEpic)) {
                 statusCalculation(subtask.getEpicId());
                 localDateTimeCalculation(subtask.idEpic);
+                Epic epic = mapEpics.get(subtask.idEpic);
+                if (epic.getSubtask() != null) {
+                    epic.getSubtask().add(subtask);
+                }
             }
             mapSubtasks.put(subtask.getId(), subtask);
             prioritizedTasks.add(subtask);
@@ -139,7 +142,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateSubtask(Subtask subtask) throws IOException, InterruptedException {
+    public void updateSubtask(Subtask subtask) {
         if (searchForIntersections(subtask)) {
             if (mapSubtasks.containsKey(subtask.getId())) {
                 mapSubtasks.put(subtask.getId(), subtask);
@@ -148,13 +151,16 @@ public class InMemoryTaskManager implements TaskManager {
                 if (mapEpics.containsKey(subtask.idEpic)) {
                     statusCalculation(subtask.getEpicId());
                     localDateTimeCalculation(subtask.idEpic);
+                    Epic epic = mapEpics.get(subtask.idEpic);
+                    List<Subtask> listSubtask = epic.getSubtask();
+                    listSubtask.add(subtask);
                 }
             }
         }
     }
 
     @Override
-    public void deleteSubtaskId(int id) throws IOException, InterruptedException {
+    public void deleteSubtaskId(int id) {
         if (mapSubtasks.get(id).getEpicId() > 0) {
             int idEpic = mapSubtasks.get(id).getEpicId();
             if (inMemoryHistoryManager.getHistory().contains(mapSubtasks.get(id))) {
@@ -174,12 +180,12 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Epic> getEpics() throws IOException, InterruptedException {
+    public List<Epic> getEpics() {
         return new ArrayList<>(mapEpics.values());
     }
 
     @Override
-    public void deleteEpics() throws IOException, InterruptedException {
+    public void deleteEpics() {
         for (Epic epic : mapEpics.values()) {
             if (inMemoryHistoryManager.getHistory().contains(epic)) {
                 inMemoryHistoryManager.remove(epic.getId());
@@ -198,14 +204,14 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Epic getEpic(int id) throws IOException, InterruptedException {
+    public Epic getEpic(int id) {
         Epic epic = mapEpics.get(id);
         inMemoryHistoryManager.add(epic);
         return epic;
     }
 
     @Override
-    public int creatingEpic(Epic epic) throws IOException, InterruptedException {
+    public int creatingEpic(Epic epic) {
         epic.setId(identifierTask);
         identifierTask++;
         mapEpics.put(epic.getId(), epic);
@@ -221,7 +227,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateEpic(Epic epic) throws IOException, InterruptedException {
+    public void updateEpic(Epic epic) {
         if (mapEpics.containsKey(epic.getId())) {
             Epic newEpic = mapEpics.get(epic.getId());
             newEpic.setName(epic.getName());
@@ -239,7 +245,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteEpicId(int id) throws IOException, InterruptedException {
+    public void deleteEpicId(int id) {
         Epic newEpic = mapEpics.get(id);
         for (Subtask subtask : newEpic.getSubtask()) {
             if (inMemoryHistoryManager.getHistory().contains(subtask)) {
@@ -254,13 +260,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<Subtask> getSubtasksEpic(Epic epic) throws IOException, InterruptedException {
+    public ArrayList<Subtask> getSubtasksEpic(Epic epic) {
         Epic newEpic = mapEpics.get(epic.getId());
         return newEpic.getSubtask();
     }
 
     @Override
-    public List<Task> getHistory() throws IOException, InterruptedException {
+    public List<Task> getHistory() {
         return inMemoryHistoryManager.getHistory();
     }
 

@@ -28,131 +28,131 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public List<Task> getTasks() throws IOException, InterruptedException {
+    public List<Task> getTasks() {
         List<Task> task = super.getTasks();
         save();
         return task;
     }
 
     @Override
-    public void deleteTasks() throws IOException, InterruptedException {
+    public void deleteTasks() {
         super.deleteTasks();
         save();
     }
 
     @Override
-    public Task getTask(int id) throws IOException, InterruptedException {
+    public Task getTask(int id) {
         Task task = super.getTask(id);
         save();
         return task;
     }
 
     @Override
-    public int creatingTask(Task task) throws IOException, InterruptedException {
+    public int creatingTask(Task task) {
         super.creatingTask(task);
         save();
         return  task.getId();
     }
 
     @Override
-    public void updateTask(Task task) throws IOException, InterruptedException {
+    public void updateTask(Task task) {
         super.updateTask(task);
         save();
     }
 
     @Override
-    public void deleteTaskId(int id) throws IOException, InterruptedException {
+    public void deleteTaskId(int id) {
         super.deleteTaskId(id);
         save();
     }
 
     @Override
-    public List<Subtask> getSubtasks() throws IOException, InterruptedException {
+    public List<Subtask> getSubtasks() {
         List<Subtask> subtasks = super.getSubtasks();
         save();
         return subtasks;
     }
 
     @Override
-    public void deleteSubtasks() throws IOException, InterruptedException {
+    public void deleteSubtasks() {
         super.deleteSubtasks();
         save();
     }
 
     @Override
-    public Subtask getSubtask(int id) throws IOException, InterruptedException {
+    public Subtask getSubtask(int id) {
         Subtask subtask = super.getSubtask(id);
         save();
         return subtask;
     }
 
     @Override
-    public int creatingSubtask(Subtask subtask) throws IOException, InterruptedException {
+    public int creatingSubtask(Subtask subtask) {
         super.creatingSubtask(subtask);
         save();
         return subtask.getId();
     }
 
     @Override
-    public void updateSubtask(Subtask subtask) throws IOException, InterruptedException {
+    public void updateSubtask(Subtask subtask) {
         super.updateSubtask(subtask);
         save();
     }
 
     @Override
-    public void deleteSubtaskId(int id) throws IOException, InterruptedException {
+    public void deleteSubtaskId(int id) {
         super.deleteSubtaskId(id);
         save();
     }
 
     @Override
-    public List<Epic> getEpics() throws IOException, InterruptedException {
+    public List<Epic> getEpics() {
         List<Epic> epics = super.getEpics();
         save();
         return epics;
     }
 
     @Override
-    public void deleteEpics() throws IOException, InterruptedException {
+    public void deleteEpics() {
         super.deleteEpics();
         save();
     }
 
     @Override
-    public Epic getEpic(int id) throws IOException, InterruptedException {
+    public Epic getEpic(int id) {
         Epic epic = super.getEpic(id);
         save();
         return epic;
     }
 
     @Override
-    public int creatingEpic(Epic epic) throws IOException, InterruptedException {
+    public int creatingEpic(Epic epic) {
         super.creatingEpic(epic);
         save();
         return epic.getId();
     }
 
     @Override
-    public void updateEpic(Epic epic) throws IOException, InterruptedException {
+    public void updateEpic(Epic epic) {
         super.updateEpic(epic);
         save();
     }
 
     @Override
-    public void deleteEpicId(int id) throws IOException, InterruptedException {
+    public void deleteEpicId(int id) {
         super.deleteEpicId(id);
         save();
     }
 
     @Override
-    public ArrayList<Subtask> getSubtasksEpic(Epic epic) throws IOException, InterruptedException {
+    public ArrayList<Subtask> getSubtasksEpic(Epic epic) {
         ArrayList<Subtask> subtasksEpic = super.getSubtasksEpic(epic);
         save();
         return subtasksEpic;
     }
 
     @Override
-    public List<Task> getHistory() throws IOException, InterruptedException {
+    public List<Task> getHistory() {
         List<Task> history = super.getHistory();
         save();
         return history;
@@ -244,7 +244,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     /**
      * Сохранение в файл
      */
-    protected void save() throws IOException, InterruptedException {
+    protected void save() {
         try (final BufferedWriter writer = new BufferedWriter(new FileWriter(file1))) {
             writer.append("id,type,name,status,description,epic,startTime,duration,endTime");
             writer.newLine();
@@ -271,7 +271,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     /**
      * Восстановление из файла
      */
-    protected void load() throws IOException, InterruptedException {
+    protected void load() {
         int maxId = 0;
         try (final BufferedReader reader = new BufferedReader(new FileReader(file1))) {
             reader.readLine();//Пропускаем заголовок
@@ -326,7 +326,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
      * @param file1
      * @return
      */
-    public static FileBackedTasksManager loadFromFile (File file1) throws IOException, InterruptedException {
+    public static FileBackedTasksManager loadFromFile (File file1) {
         FileBackedTasksManager manager = new FileBackedTasksManager(file1.getName());
         manager.load();
         return manager;

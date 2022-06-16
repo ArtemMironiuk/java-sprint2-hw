@@ -1,6 +1,7 @@
 package http;
 
 import com.google.gson.Gson;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import tasksOfDifferentTypes.Epic;
 import tasksOfDifferentTypes.Subtask;
@@ -14,16 +15,18 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static utils.Status.DONE;
 import static utils.Status.NEW;
 
 class HttpTaskServerTest extends HttpTaskServer {
-    protected HttpTaskServer server;
+    protected static HttpTaskServer server;
 
-    public HttpTaskServerTest() throws IOException, InterruptedException {
+    @BeforeAll
+    static void startServers() throws IOException, InterruptedException {
+        new KVServer().start();
+        new HttpTaskServer().start();
+        server = new HttpTaskServer();
     }
 
     @Test

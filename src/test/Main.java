@@ -1,6 +1,8 @@
 package test;
 
 
+import http.HttpTaskManager;
+import http.HttpTaskServer;
 import http.KVServer;
 import manager.FileBackedTasksManager;
 import manager.Managers;
@@ -22,9 +24,13 @@ import static utils.Status.NEW;
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        TaskManager manager = Managers.getDefaultTaskManager();
         KVServer kvServer = new KVServer();
         kvServer.start();
+        HttpTaskServer httpTaskServer = new HttpTaskServer();
+        httpTaskServer.start();
+
+        TaskManager manager = Managers.getDefaultTaskManager();
+
       //  TaskManager manager1 = FileBackedTasksManager.loadFromFile(new File("test.csv"));
 
         Task newTask = new Task("Тест", "Описание",NEW,0);

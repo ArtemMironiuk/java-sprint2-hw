@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
-    private ArrayList<Subtask> subtasks;
+    transient ArrayList<Subtask> subtasks;
     protected LocalDateTime endTime;
 
     public Epic(String name, String description, Status status, int id) {
