@@ -13,7 +13,7 @@ public class Task{
     protected String description;
     protected Status status;
     protected int id;
-    protected TypeTasks typeTasks = TypeTasks.TASK;
+    protected TypeTasks typeTask = TypeTasks.TASK;
 
     protected LocalDateTime startTime;
     protected Duration duration;
@@ -94,7 +94,7 @@ public class Task{
 
 
     public TypeTasks getType() {
-        return typeTasks;
+        return typeTask;
     }
 
     @Override

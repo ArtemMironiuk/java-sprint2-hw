@@ -9,16 +9,10 @@ import manager.FileBackedTasksManager;
 import tasksOfDifferentTypes.Epic;
 import tasksOfDifferentTypes.Subtask;
 import tasksOfDifferentTypes.Task;
-import utils.TypeTasks;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class HttpTaskManager extends FileBackedTasksManager {
     private String url;
@@ -72,18 +66,11 @@ public class HttpTaskManager extends FileBackedTasksManager {
         inMemoryHistoryManager = gson.fromJson(split[3], new TypeToken<HashMap <Integer, Task>>() {
         }.getType());
 
-//        String jsonTasks = kvClient.load("Tasks");
-//        String jsonSubtasks = kvClient.load("Subtasks");
-//        String jsonEpics = kvClient.load("Epics");
-//        String jsonHistory = kvClient.load("History");
-//        super.load();
-//        mapTasks = gson.fromJson(jsonTasks, new TypeToken<HashMap <Integer, Task>>() {
-//        }.getType());
-//        mapSubtasks = gson.fromJson(jsonTasks, new TypeToken<HashMap <Integer, Subtask>>() {
-//        }.getType());
-//        mapEpics = gson.fromJson(jsonTasks, new TypeToken<HashMap <Integer, Epic>>() {
-//        }.getType());
-//         = gson.fromJson(jsonTasks, new TypeToken<HashMap <Integer, Task>>() {
-//        }.getType());
+    }
+
+    public static HttpTaskManager loadFromUrl (String uri) {
+        HttpTaskManager manager = new HttpTaskManager(uri);
+        manager.load();
+        return manager;
     }
 }

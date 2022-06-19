@@ -2,7 +2,6 @@ package http;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import json.DurationAdapter;
@@ -20,8 +19,11 @@ import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import static jdk.internal.util.xml.XMLStreamWriter.DEFAULT_CHARSET;
+import static utils.Status.DONE;
+import static utils.Status.NEW;
 
 public class HttpTaskServer { //18 эндпоинтов и в тестах сделать клиента на этот класс
     public static final int PORT = 8080;
@@ -439,12 +441,35 @@ public class HttpTaskServer { //18 эндпоинтов и в тестах сд�
         }
     }
 
-//        public static void main (String[]args) throws IOException {
-//            new KVServer().start();
-//            new HttpTaskServer().start();
-//
-////        сохраняем отдельно задачи, сабтаски и
-//
-//
-//        }
+        public static void main (String[]args) throws IOException {
+            new KVServer().start();
+            new HttpTaskServer().start();
+
+            TaskManager manager = Managers.getDefaultTaskManager();
+            Subtask newSubtask = new Subtask("Тест", "Описание", NEW,0, 0,LocalDateTime.of(2022,5,27,18,00,10), Duration.ofMinutes(15));
+            Subtask newSubtask1 = new Subtask("Тест", "Описание", DONE,0,0,LocalDateTime.of(2022,5,26,17,50,10), Duration.ofMinutes(30));
+            Subtask newSubtask2 = new Subtask("Тест", "Описание", NEW,0,0,LocalDateTime.of(2022,5,27,16,50,10), Duration.ofMinutes(50));
+
+            ArrayList<Subtask> subtaskList = new ArrayList<>();
+            ArrayList<Subtask> subtaskList1 = new ArrayList<>();
+            subtaskList.add(newSubtask);
+            subtaskList.add(newSubtask1);
+            subtaskList1.add(newSubtask2);
+
+            Epic newEpic = new Epic("Тест", "Описание", NEW, 0,subtaskList);
+            Epic newEpic1 = new Epic("Тест", "Описание", NEW,0,subtaskList1);
+
+            manager.creatingSubtask(newSubtask);
+            manager.creatingSubtask(newSubtask1);
+            manager.creatingSubtask(newSubtask2);
+            manager.creatingEpic(newEpic);
+            manager.creatingEpic(newEpic1);
+
+            String json = gson.toJson(manager.getEpics());
+            System.out.println(json);
+
+//        сохраняем отдельно задачи, сабтаски и
+
+
+        }
 }

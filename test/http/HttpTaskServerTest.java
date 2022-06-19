@@ -1,6 +1,7 @@
 package http;
 
 import com.google.gson.Gson;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import tasksOfDifferentTypes.Epic;
@@ -21,12 +22,19 @@ import static utils.Status.NEW;
 
 class HttpTaskServerTest extends HttpTaskServer {
     protected static HttpTaskServer server;
+    protected static KVServer kvServer;
 
     @BeforeAll
     static void startServers() throws IOException, InterruptedException {
-        new KVServer().start();
-        new HttpTaskServer().start();
+        kvServer = new KVServer();
         server = new HttpTaskServer();
+        kvServer.start();
+        server.start();
+    }
+    @AfterEach
+    void closeServers(){
+        kvServer.stop();
+        server.stop();
     }
 
     @Test

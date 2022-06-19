@@ -14,6 +14,7 @@ import utils.Status;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class Main {
         httpTaskServer.start();
 
         TaskManager manager = Managers.getDefaultTaskManager();
+        TaskManager manager1 = HttpTaskManager.loadFromUrl("http://localhost:8078/");
 
       //  TaskManager manager1 = FileBackedTasksManager.loadFromFile(new File("test.csv"));
 

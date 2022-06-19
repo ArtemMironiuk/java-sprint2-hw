@@ -14,11 +14,13 @@ public class Epic extends Task {
 
     public Epic(String name, String description, Status status, int id) {
         super(name, description,status, id);
-        subtasks = new ArrayList<>();
+        this.subtasks = new ArrayList<>();
+        typeTask = TypeTasks.EPIC;
     }
     public Epic(String name, String description, Status status, int id, ArrayList<Subtask> subtasks) {
         super(name, description,status, id);
         this.subtasks = subtasks;
+        typeTask = TypeTasks.EPIC;
     }
 
     public ArrayList<Subtask> getSubtask() {
@@ -71,7 +73,8 @@ public class Epic extends Task {
     }
 
     public TypeTasks getType() {
-        return TypeTasks.EPIC;
+        typeTask = TypeTasks.EPIC;
+        return typeTask;
     }
 
     @Override
@@ -93,14 +96,14 @@ public class Epic extends Task {
     @Override
     public String toString() {
         return "Epic{" +
-                "name='" + getName() + '\'' +
+                " name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\''+
                 ", status='" + getStatus() + '\'' +
                 ", id=" + getId() + '\'' +
                 ", startTime='" + getStartTime() + '\'' +
                 ", duration='" + getDuration() + '\'' +
                 ", endTime='" + endTime + '\'' +
-                ", subtask=" + subtasks +
+                ", subtask=" + getSubtask() +
                 '}';
     }
 }
