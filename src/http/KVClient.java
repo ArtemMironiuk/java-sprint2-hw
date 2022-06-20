@@ -31,13 +31,11 @@ public class KVClient {
                 .build();
         try {
             HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200) {
-//                if (!response.body().isEmpty()){ //попробовать убрать это
-                    token = response.body();
-                    System.out.println(token);
- //               }
-            } else {
+            if (response.statusCode() != 200) {
                 System.out.println("Что то пошло не так " + response.statusCode());
+            } else {
+                token = response.body();
+                System.out.println(token);
             }
         } catch (IOException|InterruptedException e) {
             e.printStackTrace();
@@ -56,10 +54,8 @@ public class KVClient {
         try {
             HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-//                if (!response.body().isEmpty()){
                     json = response.body();
                     System.out.println(json);
- //               }
             } else {
                 System.out.println("Что то пошло не так " + response.statusCode());
                 return null;
@@ -81,6 +77,11 @@ public class KVClient {
                 .build();
         try {
             HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                System.out.println(body);
+            } else {
+                System.out.println("Что то пошло не так " + response.statusCode());
+            }
         } catch (NullPointerException | InterruptedException | IOException e) {
             System.out.println("Во время выполнения POST запроса возникла ошибка.\n" + "Проверьте, пожалуйста, адрес и повторите попытку.");
         }

@@ -33,7 +33,7 @@ public class HttpTaskServer { //18 эндпоинтов и в тестах сд�
             .registerTypeAdapter(Duration.class, new DurationAdapter())
             .create();
 
-    HttpServer httpServer;
+    private HttpServer httpServer;
     TaskManager manager = Managers.getDefaultTaskManager();
 
     public HttpTaskServer() {
@@ -139,6 +139,7 @@ public class HttpTaskServer { //18 эндпоинтов и в тестах сд�
                         }
                         System.out.println("Тело передано на сервер");
                         h.sendResponseHeaders(201, 0);
+
                         break;
                     case "DELETE":
                         manager.deleteTasks();
@@ -446,27 +447,27 @@ public class HttpTaskServer { //18 эндпоинтов и в тестах сд�
             new HttpTaskServer().start();
 
             TaskManager manager = Managers.getDefaultTaskManager();
-            Subtask newSubtask = new Subtask("Тест", "Описание", NEW,0, 0,LocalDateTime.of(2022,5,27,18,00,10), Duration.ofMinutes(15));
-            Subtask newSubtask1 = new Subtask("Тест", "Описание", DONE,0,0,LocalDateTime.of(2022,5,26,17,50,10), Duration.ofMinutes(30));
-            Subtask newSubtask2 = new Subtask("Тест", "Описание", NEW,0,0,LocalDateTime.of(2022,5,27,16,50,10), Duration.ofMinutes(50));
-
-            ArrayList<Subtask> subtaskList = new ArrayList<>();
-            ArrayList<Subtask> subtaskList1 = new ArrayList<>();
-            subtaskList.add(newSubtask);
-            subtaskList.add(newSubtask1);
-            subtaskList1.add(newSubtask2);
-
-            Epic newEpic = new Epic("Тест", "Описание", NEW, 0,subtaskList);
-            Epic newEpic1 = new Epic("Тест", "Описание", NEW,0,subtaskList1);
-
-            manager.creatingSubtask(newSubtask);
-            manager.creatingSubtask(newSubtask1);
-            manager.creatingSubtask(newSubtask2);
-            manager.creatingEpic(newEpic);
-            manager.creatingEpic(newEpic1);
-
-            String json = gson.toJson(manager.getEpics());
-            System.out.println(json);
+//            Subtask newSubtask = new Subtask("Тест", "Описание", NEW,0, 0,LocalDateTime.of(2022,5,27,18,00,10), Duration.ofMinutes(15));
+//            Subtask newSubtask1 = new Subtask("Тест", "Описание", DONE,0,0,LocalDateTime.of(2022,5,26,17,50,10), Duration.ofMinutes(30));
+//            Subtask newSubtask2 = new Subtask("Тест", "Описание", NEW,0,0,LocalDateTime.of(2022,5,27,16,50,10), Duration.ofMinutes(50));
+//
+//            ArrayList<Subtask> subtaskList = new ArrayList<>();
+//            ArrayList<Subtask> subtaskList1 = new ArrayList<>();
+//            subtaskList.add(newSubtask);
+//            subtaskList.add(newSubtask1);
+//            subtaskList1.add(newSubtask2);
+//
+//            Epic newEpic = new Epic("Тест", "Описание", NEW, 0,subtaskList);
+//            Epic newEpic1 = new Epic("Тест", "Описание", NEW,0,subtaskList1);
+//
+//            manager.creatingSubtask(newSubtask);
+//            manager.creatingSubtask(newSubtask1);
+//            manager.creatingSubtask(newSubtask2);
+//            manager.creatingEpic(newEpic);
+//            manager.creatingEpic(newEpic1);
+//
+//            String json = gson.toJson(manager.getEpics());
+//            System.out.println(json);
 
 //        сохраняем отдельно задачи, сабтаски и
 

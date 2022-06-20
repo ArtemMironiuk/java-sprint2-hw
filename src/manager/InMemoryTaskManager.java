@@ -17,7 +17,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     protected HistoryManager inMemoryHistoryManager = Managers.getDefaultHistory();
 
-    protected final Set<Task> prioritizedTasks = new TreeSet<>((o1, o2) -> {
+    protected Set<Task> prioritizedTasks = new TreeSet<>((o1, o2) -> {
         if ((o1.getStartTime() != null) && (o2.getStartTime() != null)) {
             return o1.getStartTime().compareTo(o2.getStartTime());
         } else if (o1.getStartTime() == null) {
