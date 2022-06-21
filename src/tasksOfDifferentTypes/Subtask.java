@@ -22,6 +22,15 @@ public class Subtask extends Task {
         typeTask = TypeTasks.SUBTASK;
     }
 
+    public Subtask() {
+        typeTask = TypeTasks.SUBTASK;
+    }
+
+    @Override
+    public TypeTasks getType() {
+        return typeTask;
+    }
+
     public int getEpicId() {
         return idEpic;
     }
@@ -30,9 +39,7 @@ public class Subtask extends Task {
         this.idEpic = idEpic;
     }
 
-    public TypeTasks getType() {
-        return TypeTasks.SUBTASK;
-    }
+
 
     @Override
     public boolean equals(Object o) {

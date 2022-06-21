@@ -138,7 +138,7 @@ class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager>{
     }
 
     @Test
-    void loadFromFile() throws IOException, InterruptedException {
+    void loadFromFile() {
         TaskManager manager = FileBackedTasksManager.loadFromFile(new File ("test.csv"));
         assertNotNull(manager,"Нет сохранения");
         assertEquals(taskManager.getTasks(),manager.getTasks());
@@ -149,7 +149,7 @@ class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager>{
     }
 
     @Test
-    void loadFromEmptyTasksFile() throws IOException, InterruptedException {
+    void loadFromEmptyTasksFile() {
         taskManager.deleteTasks();
         taskManager.deleteEpics();
         taskManager.deleteSubtasks();
@@ -164,7 +164,7 @@ class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager>{
     }
 
     @Test
-    void loadFromEmptyHistoryFile() throws IOException, InterruptedException {
+    void loadFromEmptyHistoryFile() {
         taskManager.deleteTasks();
         taskManager.deleteEpics();
         taskManager.deleteSubtasks();

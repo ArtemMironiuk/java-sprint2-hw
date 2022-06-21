@@ -13,12 +13,10 @@ import tasksOfDifferentTypes.Task;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class HttpTaskManager extends FileBackedTasksManager {
     private String url;
     private KVClient kvClient;
-    private String key = "manager";
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .registerTypeAdapter(Duration.class, new DurationAdapter())
@@ -29,28 +27,9 @@ public class HttpTaskManager extends FileBackedTasksManager {
         this.url = url;
         kvClient = new KVClient(url);
     }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
 //    запись
     @Override
     protected void save() {
-//        final StringBuilder stringBuilder = new StringBuilder();
-//
-//        stringBuilder.append(gson.toJson(mapTasks));
-//        stringBuilder.append(";");
-//        stringBuilder.append(gson.toJson(mapSubtasks));
-//        stringBuilder.append(";");
-//        stringBuilder.append(gson.toJson(mapEpics));
-//        stringBuilder.append(";");
-//        stringBuilder.append(gson.toJson(inMemoryHistoryManager.getHistory()));
-//        kvClient.put(key,stringBuilder.toString());
-
         String jsonTasks = gson.toJson(new ArrayList<>(mapTasks.values()));
         kvClient.put("tasks", jsonTasks);
         String jsonSubtasks = gson.toJson(new ArrayList<>(mapSubtasks.values()));
@@ -65,16 +44,6 @@ public class HttpTaskManager extends FileBackedTasksManager {
     //чтение
     @Override
     protected void load() {
-//        String jsonManager = kvClient.load(key);
-//        String[] split = jsonManager.split(";");
-//        mapTasks = gson.fromJson(split[0],new TypeToken<HashMap <Integer, Task>>() {
-//        }.getType());
-//        mapSubtasks = gson.fromJson(split[1], new TypeToken<HashMap <Integer, Subtask>>() {
-//        }.getType());
-//        mapEpics = gson.fromJson(split[2], new TypeToken<HashMap <Integer, Epic>>() {
-//        }.getType());
-//        inMemoryHistoryManager = gson.fromJson(split[3], new TypeToken<HashMap <Integer, Task>>() {
-//        }.getType());
         ArrayList<Task> tasks = gson.fromJson(kvClient.load("tasks"), new TypeToken<ArrayList<Task>>() {
         }.getType());
         if(!tasks.isEmpty()) {

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
-    transient ArrayList<Subtask> subtasks;
+    protected ArrayList<Subtask> subtasks;
     protected LocalDateTime endTime;
 
     public Epic(String name, String description, Status status, int id) {
@@ -20,6 +20,11 @@ public class Epic extends Task {
     public Epic(String name, String description, Status status, int id, ArrayList<Subtask> subtasks) {
         super(name, description,status, id);
         this.subtasks = subtasks;
+        typeTask = TypeTasks.EPIC;
+    }
+
+    public Epic(){
+        this.subtasks = new ArrayList<>();
         typeTask = TypeTasks.EPIC;
     }
 
@@ -35,11 +40,13 @@ public class Epic extends Task {
      */
     public void calculateStartTime() {
         if (subtasks != null) {
-            startTime = subtasks.get(0).getStartTime();
-            if (subtasks.size() > 0) {
-                for (int i = 1; i < subtasks.size(); i++) {
-                    if (startTime.isAfter(subtasks.get(i).getStartTime())) {
-                        startTime = subtasks.get(i).getStartTime();
+            if (subtasks.size()>0) {
+                startTime = subtasks.get(0).getStartTime();
+                if (subtasks.size() > 0) {
+                    for (int i = 1; i < subtasks.size(); i++) {
+                        if (startTime.isAfter(subtasks.get(i).getStartTime())) {
+                            startTime = subtasks.get(i).getStartTime();
+                        }
                     }
                 }
             }
@@ -61,11 +68,13 @@ public class Epic extends Task {
      */
     public void calculateEndTime() {
         if (subtasks != null) {
-            this.endTime = subtasks.get(0).getEndTime();
-            if (subtasks.size() > 0) {
-                for (int i = 1; i < subtasks.size(); i++) {
-                    if (endTime.isBefore(subtasks.get(i).getEndTime())) {
-                        endTime = subtasks.get(i).getEndTime();
+            if(subtasks.size() > 0) {
+                this.endTime = subtasks.get(0).getEndTime();
+                if (subtasks.size() > 0) {
+                    for (int i = 1; i < subtasks.size(); i++) {
+                        if (endTime.isBefore(subtasks.get(i).getEndTime())) {
+                            endTime = subtasks.get(i).getEndTime();
+                        }
                     }
                 }
             }
@@ -73,7 +82,6 @@ public class Epic extends Task {
     }
 
     public TypeTasks getType() {
-        typeTask = TypeTasks.EPIC;
         return typeTask;
     }
 

@@ -283,6 +283,9 @@ public class InMemoryTaskManager implements TaskManager {
         int newCounter = 0;
         int doneCounter = 0;
         ArrayList<Subtask> list;
+        if (mapEpics.get(idEpic).getSubtask() == null){
+            mapEpics.get(idEpic).setStatus(Status.NEW);
+        }
         list = mapEpics.get(idEpic).getSubtask();
         if (list == null) {
             mapEpics.get(idEpic).setStatus(Status.NEW);

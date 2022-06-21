@@ -195,7 +195,7 @@ public class HttpTaskServer { //18 эндпоинтов и в тестах сд�
                                 System.out.println("subtask c id = " + id + " удален!");
                                 h.sendResponseHeaders(200, 0);
                             } else {
-                                System.out.println("subtask по id не удален.");
+                                System.out.println("subtask по id = " + id + " не удален.");
                                 h.sendResponseHeaders(401, 0);
                             }
                             id = null;

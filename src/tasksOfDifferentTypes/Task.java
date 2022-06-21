@@ -34,6 +34,10 @@ public class Task{
         this.id = id;
     }
 
+    public Task() {
+
+    }
+
     public String getName() {
         return name;
     }
@@ -126,5 +130,9 @@ public class Task{
                 ", duration='" + getDuration() + '\'' +
                 ", endTime='" + getEndTime() + '\'' +
                 '}';
+    }
+
+    protected void setTypeTask(TypeTasks typeTask) {
+        this.typeTask = typeTask;
     }
 }
